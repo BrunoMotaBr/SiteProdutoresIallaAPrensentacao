@@ -1,107 +1,219 @@
 :root {
-    --borda: #cbd5e1; /* slate-300 */
-    --borda-focus: #3b82f6; /* blue-500 */
-    --bg: #ffffff;
-    --texto: #0f172a; /* slate-900 */
-    --placeholder: #94a3b8; /* slate-400 */
-    --icone: #64748b; /* slate-500 */
+  --borda: #cbd5e1;        /* slate-300 */
+  --borda-focus: #3b82f6;  /* blue-500 */
+  --bg: #ffffff;
+  --texto: #0f172a;        /* slate-900 */
+  --placeholder: #94a3b8;  /* slate-400 */
+  --icone: #64748b;        /* slate-500 */
 }
 
+/* CONTÊINER DO INPUT DO CHAT */
 .chat-input {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    width: 93%;
-    gap: 15px;
-    padding: 6px 8px;
-    background: var(--bg);
-    border: 1px solid var(--borda);
-    border-radius: 8px;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
-    transition: border-color 160ms, box-shadow 160ms;
-    position: absolute;
-    bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  width: 93%;
+  gap: 15px;
+  padding: 6px 8px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-
-.chat-input:focus-within {
-    border-color: var(--borda-focus);
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+/* “Card” de fundo do campo */
+.chat-input__card {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg);
+  border-radius: 999px;
+  border: 1px solid var(--borda);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  box-sizing: border-box;
 }
 
-
-.chat-input__btn {
-    appearance: none; 
-    border: 0; 
-    background: transparent; 
-    padding: 8px; 
-    margin: 0;
-    display: inline-flex; 
-    align-items: center; 
-    justify-content: center; 
-    border-radius: 6px; 
-    cursor: pointer;
-    color: var(--icone); 
-    width: 25px; 
-    height: 25px;
-    position: absolute;
-    left: -45px;
-}
-.chat-input__btn:first-child{
-    left: -65px;
+/* Área de texto */
+.chat-input__campo {
+  flex: 1;
+  position: relative;
 }
 
-.chat-input__btn img{
-    width: 20px;
-    height: 20px;
+.chat-input__textarea {
+  width: 100%;
+  min-height: 40px;
+  max-height: 120px;
+  resize: vertical;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--texto);
+  font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  padding: 6px 4px;
+  box-sizing: border-box;
 }
 
-.botoes-mensagens{
-    display: flex;
-    width: 25px;
-    height: 25px;
-    position: relative;
+.chat-input__textarea::placeholder {
+  color: var(--placeholder);
 }
 
-
-.chat-input__btn:hover { 
-    background: #f1f5f9; 
+/* Ícones de ação à esquerda do campo (ex: clipe, emoji, etc) */
+.chat-input__acoes-esq {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.chat-input__btn:active { 
-    transform: translateY(1px); 
+/* Botões icônicos “fantasma” */
+.chat-input__btn-icone {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: var(--icone);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
 }
 
-
-.chat-input__field {
-    border: 0; 
-    outline: none; 
-    background: transparent;
-    padding: 8px; 
-    font-size: 15px; 
-    line-height: 1.4; 
-    color: var(--texto);
+.chat-input__btn-icone:hover {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--texto);
+  transform: translateY(1px);
 }
 
-
-.chat-input__field::placeholder { 
-    color: var(--placeholder); 
+/* Ações à direita (botão de enviar etc.) */
+.chat-input__acoes-dir {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.sr-only { 
-    position: absolute; 
-    width: 1px; height: 1px; 
-    padding: 0; margin: -1px; 
-    overflow: hidden; 
-    clip: rect(0,0,0,0); 
-    white-space: nowrap; 
-    border: 0; 
+/* Botão de enviar */
+.chat-input__btn-enviar {
+  border-radius: 999px;
+  border: none;
+  background: #0f172a;
+  color: #f9fafb;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
 }
 
+.chat-input__btn-enviar:hover {
+  background: #020617;
+  box-shadow: 0 5px 18px rgba(15, 23, 42, 0.35);
+  transform: translateY(1px);
+}
+
+.chat-input__btn-enviar:disabled {
+  opacity: 0.6;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Ícone dentro do botão de enviar */
+.chat-input__btn-enviar svg,
+.chat-input__btn-icone svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Input de arquivo escondido, mas acessível pra screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Card genérico (se usado junto ao input, ex: dica, preview, etc.) */
 .card {
-    background: #fff; 
-    border: 1px solid #e2e8f0; 
-    border-radius: 12px; 
-    padding: 16px; 
-    box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  box-sizing: border-box;
+}
+
+/* ==================================
+   RESPONSIVIDADE INPUT DE MENSAGEM
+   ================================== */
+
+/* Notebooks / tablets maiores */
+@media (max-width: 1024px) {
+  .chat-input {
+    width: 100%;
+    padding: 8px 10px;
+  }
+
+  .chat-input__card {
+    padding: 8px 10px;
+  }
+}
+
+/* Tablets e celulares grandes */
+@media (max-width: 768px) {
+  .chat-input {
+    width: 100%;
+    padding: 8px 10px;
+    gap: 10px;
+  }
+
+  .chat-input__card {
+    border-radius: 18px;
+    align-items: center;
+  }
+
+  .chat-input__textarea {
+    font-size: 14px;
+  }
+
+  .chat-input__btn-enviar {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+  .chat-input {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 6px 8px;
+  }
+
+  .chat-input__card {
+    width: 100%;
+    padding: 8px 10px;
+  }
+
+  .chat-input__acoes-dir {
+    justify-content: flex-end;
+  }
+
+  .chat-input__btn-enviar {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .chat-input__btn-icone {
+    width: 30px;
+    height: 30px;
+  }
 }
