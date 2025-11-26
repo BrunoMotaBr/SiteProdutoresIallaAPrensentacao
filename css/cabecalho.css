@@ -184,4 +184,124 @@ a{
 
 .mini-menu-ativo p{
   width: 250px;
-} 
+}
+
+/* ============================
+   RESPONSIVIDADE CABEÇALHO
+   ============================ */
+
+/* Notebooks / tablets maiores */
+@media (max-width: 1024px){
+  .cabecalho{
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 80px;
+  }
+
+  .cabecalho ul{
+    gap: 18px;
+  }
+
+  .cabecalho img{
+    width: 90px;
+  }
+
+  .cabecalho--login--cad{
+    padding: 0 20px;
+  }
+}
+
+/* Tablets e celulares grandes */
+@media (max-width: 768px){
+  .cabecalho{
+    height: auto;
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    row-gap: 8px;
+    justify-content: space-between;
+  }
+
+  .cabecalho ul{
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .cabecalho img{
+    width: 80px;
+  }
+
+  a{
+    font-size: 18px;
+  }
+
+  .cabecalho--login--cad{
+    height: auto;
+    padding: 24px 16px;
+    align-items: center;
+  }
+
+  .cabecalho--login--cad button{
+    margin-top: 24px;
+  }
+
+  .cabecalho--login--cad img{
+    margin-top: 24px;
+    margin-right: 0;
+  }
+
+  .mini-menu{
+    right: 8px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px){
+  .cabecalho{
+    padding: 8px 12px;
+    justify-content: center;
+  }
+
+  .cabecalho ul{
+    gap: 10px;
+  }
+
+  .cabecalho img{
+    width: 70px;
+  }
+
+  a{
+    font-size: 16px;
+  }
+
+  .botao--branco,
+  .botao--preto{
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .cabecalho--login--cad{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .cabecalho--login--cad img{
+    width: 120px;
+    height: 120px;
+    margin-top: 12px;
+  }
+
+  .mini-menu{
+    width: 90vw;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 60px;
+  }
+
+  .mini-menu-ativo a{
+    padding: 10px 16px;
+  }
+}
