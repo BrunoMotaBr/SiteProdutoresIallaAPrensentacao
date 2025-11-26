@@ -1,0 +1,56 @@
+<!-- editar-perfil.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar perfil</title>
+  <link rel="stylesheet" href="../css/perfil.css">
+</head>
+<body>
+
+  <!-- AppBar preta do print -->
+  <div class="appbar">
+    <button class="appbar-voltar" type="button" onclick="history.back()" aria-label="Voltar">
+      <!-- seta simples -->
+      <span>&larr;</span>
+    </button>
+    <h1>Editar perfil</h1>
+    <div class="appbar-espaco"></div>
+  </div>
+
+  <main class="conteudo conteudo-estreito">
+    <!-- Avatar + ação -->
+    <div class="editar-topo">
+      <div class="avatar avatar-grande">
+        <img src="../imagens/image.png" alt="Foto do perfil">
+      </div>
+      <button class="link-acao" type="button">Alterar foto ✎</button>
+    </div>
+
+    <!-- Formulário -->
+    <form class="form-editar" onsubmit="event.preventDefault(); /* TODO: integrar API */">
+      <label class="campo">
+        <span class="rotulo">Novo nome</span>
+        <input class="entrada" type="text" name="nome" placeholder="Novo nome">
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Novo nome de usuário</span>
+        <input class="entrada" type="text" name="username" placeholder="Novo nome de usuário">
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Novo status</span>
+        <input class="entrada" type="text" name="status" placeholder="Novo status">
+      </label>
+
+      <div class="acoes-form">
+        <button class="btn btn-primario" type="submit">Salvar alterações</button>
+        <button class="btn btn-secundario" type="button" onclick="history.back()">Cancelar</button>
+      </div>
+    </form>
+  </main>
+
+</body>
+</html>

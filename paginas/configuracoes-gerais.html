@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Configurações gerais</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <script>const id = new URLSearchParams(location.search).get("id");</script>
+  <main class="cx conteudo2">
+    <!-- AppBar local -->
+    <div class="appbar-local">
+      <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+      <h1>Configurações gerais</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <!-- Navegação lateral -->
+      <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+      </div>
+
+      <!-- Conteúdo -->
+      <section class="painel">
+        <!-- Preferências do app -->
+        <div class="card">
+          <h2 class="titulo">Preferências do aplicativo</h2>
+
+          <div class="linha-2col">
+            <div>
+              <strong>Tema</strong>
+              <p class="mini">Aparência do aplicativo.</p>
+            </div>
+            <div class="grupo-radio" role="radiogroup" aria-label="Escolha de tema">
+              <label class="radio"><input type="radio" name="tema" value="claro"> Claro</label>
+              <label class="radio"><input type="radio" name="tema" value="escuro"> Escuro</label>
+              <label class="radio"><input type="radio" name="tema" value="sistema" checked> Sistema</label>
+            </div>
+          </div>
+
+          <div class="linha-2col">
+            <div>
+              <strong>Idioma</strong>
+              <p class="mini">Linguagem da interface.</p>
+            </div>
+            <div class="grupo-radio" role="radiogroup" aria-label="Idioma">
+              <label class="radio"><input type="radio" name="idioma" value="pt-BR" checked> Português (Brasil)</label>
+              <label class="radio"><input type="radio" name="idioma" value="en-US"> English</label>
+              <label class="radio"><input type="radio" name="idioma" value="es-ES"> Español</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacidade e personalização -->
+        <div class="card">
+          <h2 class="titulo">Privacidade e personalização</h2>
+
+          <div class="campo-linha">
+            <div class="txt">
+              <strong>Recomendações por localização</strong>
+              <span class="sub">Usar sua localização para sugerir eventos próximos.</span>
+            </div>
+            <label class="switch">
+              <input id="loc" type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="campo-linha">
+            <div class="txt">
+              <strong>Personalização por interesses</strong>
+              <span class="sub">Ajuste interesses para melhorar recomendações.</span>
+            </div>
+            <div class="tags" id="tagsInteresses">
+              <!-- pills interativas -->
+              <label class="pill"><input type="checkbox" value="música">Música</label>
+              <label class="pill"><input type="checkbox" value="tecnologia">Tecnologia</label>
+              <label class="pill"><input type="checkbox" value="esportes">Esportes</label>
+              <label class="pill"><input type="checkbox" value="gastronomia">Gastronomia</label>
+              <label class="pill"><input type="checkbox" value="arte">Arte</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notificações -->
+        <div class="card">
+          <h2 class="titulo">Notificações</h2>
+          <div class="grid-2cols">
+            <div class="campo-linha" style="justify-content:space-between;">
+              <div class="txt">
+                <strong>E-mail</strong>
+                <span class="sub">Atualizações importantes.</span>
+              </div>
+              <label class="switch"><input id="nEmail" type="checkbox"><span class="slider"></span></label>
+            </div>
+
+            <div class="campo-linha" style="justify-content:space-between;">
+              <div class="txt">
+                <strong>Push</strong>
+                <span class="sub">Alertas no dispositivo.</span>
+              </div>
+              <label class="switch"><input id="nPush" type="checkbox" checked><span class="slider"></span></label>
+            </div>
+
+            <div class="campo-linha" style="justify-content:space-between;">
+              <div class="txt">
+                <strong>Marketing</strong>
+                <span class="sub">Ofertas e novidades.</span>
+              </div>
+              <label class="switch"><input id="nMkt" type="checkbox"><span class="slider"></span></label>
+            </div>
+
+            <div class="campo-linha" style="justify-content:space-between;">
+              <div class="txt">
+                <strong>Mensagens</strong>
+                <span class="sub">Chats e menções.</span>
+              </div>
+              <label class="switch"><input id="nMsg" type="checkbox" checked><span class="slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acessibilidade -->
+        <div class="card">
+          <h2 class="titulo">Acessibilidade</h2>
+
+          <div class="linha-2col">
+            <div>
+              <strong>Tamanho da fonte</strong>
+              <p class="mini">Ajuste o tamanho do texto da interface.</p>
+            </div>
+            <div>
+              <input id="fontSize" class="range" type="range" min="90" max="130" step="5" value="100">
+              <div class="mini">Atual: <span id="fontPct">100%</span></div>
+            </div>
+          </div>
+
+          <div class="linha-2col">
+            <div>
+              <strong>Reduzir animações</strong>
+              <p class="mini">Menos movimentos e transições.</p>
+            </div>
+            <label class="switch" style="justify-self:start;">
+              <input id="reduceMotion" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Dados da conta -->
+        <div class="card">
+          <h2 class="titulo">Dados da conta</h2>
+
+          <div class="acoes-h">
+            <button class="btn" onclick="exportarDados()">Exportar meus dados (.json)</button>
+            <button class="btn btn-line" onclick="baixarExtrato()">Baixar extrato de atividades</button>
+          </div>
+          <p class="nota">Você pode solicitar cópia dos seus dados a qualquer momento.</p>
+
+          <div class="campo-linha" style="margin-top:10px;">
+            <div class="txt">
+              <strong>Limpar histórico</strong>
+              <span class="sub">Remove buscas e recomendações recentes.</span>
+            </div>
+            <button class="btn btn-line" onclick="limparHistorico()">Limpar</button>
+          </div>
+        </div>
+
+        <!-- Sessão -->
+        <div class="card">
+          <h2 class="titulo">Sessão</h2>
+          <div class="acoes-h">
+            <button class="btn" onclick="sair()">Sair da conta</button>
+            <button class="btn btn-line" onclick="encerrarSessoes()">Encerrar em todos os dispositivos</button>
+          </div>
+        </div>
+
+        <!-- Zona de risco -->
+        <div class="card perigo">
+          <h2 class="titulo">Zona de risco</h2>
+          <p>Excluir sua conta removerá permanentemente seus dados.</p>
+          <button class="btn btn-danger" onclick="excluirConta()">Excluir conta</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // ====== TODOs de API ======
+    // PATCH /api/prefs { tema, idioma, loc, interesses[], nEmail, nPush, nMkt, nMsg, fontPct, reduceMotion }
+    // POST  /api/account/export   -> retorna arquivo .json
+    // GET   /api/account/activity -> retorna extrato csv/json
+    // POST  /api/auth/logout
+    // POST  /api/auth/logout-all
+    // DELETE /api/conta
+    // POST  /api/account/clear-history
+
+    const $ = (s)=>document.querySelector(s);
+    const $$ = (s)=>[...document.querySelectorAll(s)];
+
+    // Tema
+    $$('input[name="tema"]').forEach(r=>{
+      r.addEventListener('change', ()=> salvar('tema', r.value));
+    });
+
+    // Idioma
+    $$('input[name="idioma"]').forEach(r=>{
+      r.addEventListener('change', ()=> salvar('idioma', r.value));
+    });
+
+    // Localização
+    $('#loc').addEventListener('change', ()=> salvar('loc', $('#loc').checked));
+
+    // Interesses (pills)
+    const tags = $('#tagsInteresses');
+    tags.addEventListener('click', (ev)=>{
+      const lab = ev.target.closest('.pill');
+      if(!lab) return;
+      lab.classList.toggle('ativo');
+      const ativo = [...tags.querySelectorAll('.pill.ativo input')].map(i=>i.value);
+      salvar('interesses', ativo);
+    });
+
+    // Notificações
+    ['nEmail','nPush','nMkt','nMsg'].forEach(id=>{
+      $('#'+id).addEventListener('change', ()=> salvar(id, $('#'+id).checked));
+    });
+
+    // Acessibilidade
+    const fontSize = $('#fontSize');
+    const fontPct  = $('#fontPct');
+    fontSize.addEventListener('input', ()=>{
+      fontPct.textContent = fontSize.value + '%';
+      document.documentElement.style.fontSize = fontSize.value + '%';
+    });
+    fontSize.addEventListener('change', ()=> salvar('fontPct', fontSize.value));
+    $('#reduceMotion').addEventListener('change', ()=> salvar('reduceMotion', $('#reduceMotion').checked));
+
+    // Ações de dados/sessão
+    async function exportarDados(){
+      // const r = await fetch('/api/account/export',{method:'POST'});
+      // const blob = await r.blob();
+      // baixar(blob, 'meus-dados.json');
+      const blob = new Blob([JSON.stringify({ demo:true, ts:Date.now() }, null, 2)], {type:'application/json'});
+      baixar(blob, 'meus-dados.json');
+    }
+    async function baixarExtrato(){
+      // const r = await fetch('/api/account/activity');
+      // const blob = await r.blob();
+      // baixar(blob, 'extrato.json');
+      const blob = new Blob([JSON.stringify({ atividades:[] }, null, 2)], {type:'application/json'});
+      baixar(blob, 'extrato.json');
+    }
+    async function limparHistorico(){
+      // await fetch('/api/account/clear-history',{method:'POST'});
+      alert('Histórico limpo.');
+    }
+    async function sair(){
+      // await fetch('/api/auth/logout',{method:'POST'});
+      alert('Sessão encerrada.'); location.href = '../login.html';
+    }
+    async function encerrarSessoes(){
+      // await fetch('/api/auth/logout-all',{method:'POST'});
+      alert('Todas as sessões foram encerradas.');
+    }
+    async function excluirConta(){
+      if(!confirm('Tem certeza? Esta ação é irreversível.')) return;
+      // await fetch('/api/conta',{method:'DELETE'});
+      alert('Conta excluída.'); location.href = '../index.html';
+    }
+
+    // util baixar arquivo
+    function baixar(blob, nome){
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = nome;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 1500);
+    }
+
+    // Persistência simples (mock) — substitua por chamadas PATCH
+    function salvar(chave, valor){
+      console.log('PATCH /api/prefs', chave, valor);
+      try {
+        const prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+        prefs[chave] = valor;
+        localStorage.setItem('prefs', JSON.stringify(prefs));
+      } catch(e) {}
+    }
+
+    // Restaura preferências salvas (mock)
+    (function restore(){
+      try{
+        const prefs = JSON.parse(localStorage.getItem('prefs') || '{}');
+        if(prefs.tema) $$('input[name="tema"]').forEach(r=>{ r.checked = (r.value===prefs.tema); });
+        if(prefs.idioma) $$('input[name="idioma"]').forEach(r=>{ r.checked = (r.value===prefs.idioma); });
+        if(typeof prefs.loc==='boolean') $('#loc').checked = prefs.loc;
+        if(Array.isArray(prefs.interesses)){
+          prefs.interesses.forEach(v=>{
+            const lab = [...$('#tagsInteresses').children].find(l => l.textContent.trim().toLowerCase()===v);
+            if(lab) lab.classList.add('ativo');
+          });
+        }
+        if(typeof prefs.nEmail==='boolean') $('#nEmail').checked = prefs.nEmail;
+        if(typeof prefs.nPush==='boolean')  $('#nPush').checked  = prefs.nPush;
+        if(typeof prefs.nMkt==='boolean')   $('#nMkt').checked   = prefs.nMkt;
+        if(typeof prefs.nMsg==='boolean')   $('#nMsg').checked   = prefs.nMsg;
+
+        if(prefs.fontPct){ fontSize.value = prefs.fontPct; fontPct.textContent = prefs.fontPct + '%'; document.documentElement.style.fontSize = prefs.fontPct + '%'; }
+        if(typeof prefs.reduceMotion==='boolean') $('#reduceMotion').checked = prefs.reduceMotion;
+      }catch(_) {}
+    })();
+  </script>
+</body>
+</html>

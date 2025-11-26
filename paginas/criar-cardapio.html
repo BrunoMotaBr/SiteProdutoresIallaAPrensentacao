@@ -1,0 +1,107 @@
+<!-- criar-cardapio.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Criar cardápio</title>
+  <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- HEADER (mantém seu componente) -->
+  <header class="cabecalho">
+    <script src="../componente/cabecalho.render.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      console.log(id)
+      renderCabecalho(".cabecalho", id);
+      function irParaCardapio2() {
+        const id = new URLSearchParams(location.search).get("id");
+        window.location.href = `criar-cardapio-2.html?id=${id}`;
+      }
+    </script>
+  </header>
+
+  <main class="conteudo2 conteudo-estreito">
+    <form class="form-cardapio" onsubmit="event.preventDefault(); /* TODO: integrar API */">
+      <div style="width: min(800px, 70%);">
+        <label class="campo">
+            <span class="rotulo">Nome</span>
+            <input class="entrada" type="text" name="nome" placeholder="Digite um nome para o cardápio"/>
+        </label>
+
+        <label class="campo">
+            <span class="rotulo">Evento</span>
+            <div class="select-wrap">
+                <select class="entrada select" name="evento">
+                    <option value="" selected>Selecione o evento</option>
+                    <option value="e1">Show Sunset</option>
+                    <option value="e2">Halloween Party</option>
+                </select>
+                <span class="chevron">▾</span>
+            </div>
+        </label>
+
+        <!-- Área de upload -->
+        <div class="dropzone" id="dropzone">
+            <input id="arquivo" type="file" multiple hidden>
+            <button class="drop-btn" type="button" onclick="document.getElementById('arquivo').click()">
+                <div class="plus">+</div>
+                <div class="dz-text">Clique ou arraste para adicionar</div>
+            </button>
+        </div>
+    </div>
+    <div>
+        <div class="acoes-topo">
+            <button class="btn icone" type="button" title="Salvar"
+                    onclick="irParaCardapio2()">
+                <span class="emoji">💾</span> <span class="lbl">Salvar</span>
+            </button>
+
+            <button class="btn icone" type="button" title="Ver">
+                <span class="emoji">👁️</span> <span class="lbl">Ver</span>
+            </button>
+        </div>
+    </div>
+        
+
+      <!-- TODO: lista de itens adicionados -->
+      <div id="lista-arquivos" class="lista-arquivos"></div>
+    </form>
+  </main>
+
+  <script>
+    // Drag & Drop simples (apenas UI; TODO: enviar à API)
+    const dz = document.getElementById('dropzone');
+    const input = document.getElementById('arquivo');
+    const lista = document.getElementById('lista-arquivos');
+
+    const realcar = (on) => dz.classList.toggle('dropzone-hover', !!on);
+
+    ['dragenter','dragover'].forEach(e =>
+      dz.addEventListener(e, ev => { ev.preventDefault(); realcar(true); })
+    );
+    ['dragleave','drop'].forEach(e =>
+      dz.addEventListener(e, ev => { ev.preventDefault(); realcar(false); })
+    );
+
+    dz.addEventListener('drop', (ev) => {
+      const files = [...(ev.dataTransfer?.files || [])];
+      if (files.length) renderLista(files);
+    });
+
+    input.addEventListener('change', () => {
+      renderLista([...input.files]);
+    });
+
+    function renderLista(files){
+      lista.innerHTML = files.map(f =>
+        `<div class="item-arquivo"><span class="nome">${f.name}</span><span class="tam">${(f.size/1024).toFixed(1)} KB</span></div>`
+      ).join('');
+    }
+  </script>
+</body>
+</html>

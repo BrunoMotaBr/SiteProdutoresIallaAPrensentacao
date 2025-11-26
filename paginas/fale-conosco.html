@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Fale conosco</title>
+<link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+<script>const id = new URLSearchParams(location.search).get("id");</script>
+<main class="cx conteudo2">
+  <div class="appbar-local"><button class="voltar" onclick="history.back()">←</button><h1>Fale conosco</h1><div class="ghost"></div></div>
+  <div class="grid">
+    <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+    <section class="painel">
+      <form class="card" onsubmit="return enviarContato(event)">
+        <h2 class="titulo">Envie uma mensagem</h2>
+        <div class="grid-2">
+          <label class="campo-bloco"><span class="rotulo">Nome</span><input class="entrada" name="nome" required></label>
+          <label class="campo-bloco"><span class="rotulo">E-mail</span><input class="entrada" type="email" name="email" required></label>
+          <label class="campo-bloco" style="grid-column:1/-1"><span class="rotulo">Assunto</span><input class="entrada" name="assunto" required></label>
+          <label class="campo-bloco" style="grid-column:1/-1"><span class="rotulo">Mensagem</span><textarea class="entrada txtarea" name="mensagem" rows="6" required></textarea></label>
+        </div>
+        <div class="acoes-h"><button class="btn" type="submit">Enviar</button></div>
+        <p class="nota">Também estamos no e-mail <b>suporte@ialla.app</b>.</p>
+      </form>
+    </section>
+  </div>
+</main>
+<script>
+async function enviarContato(ev){
+  ev.preventDefault();
+  const fd=Object.fromEntries(new FormData(ev.target).entries());
+  // TODO: POST /suporte/mensagem {nome,email,assunto,mensagem}
+  alert('Mensagem enviada! Responderemos em breve.');
+  ev.target.reset(); return false;
+}
+</script>
+</body></html>

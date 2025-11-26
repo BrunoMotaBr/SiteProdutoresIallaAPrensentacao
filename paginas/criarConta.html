@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ialla - Produtores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header class="cabecalho--login--cad">
+        <button class="btn-voltar" onclick="history.back()" aria-label="Voltar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    width="24" height="24" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+        <img src="../imagens/logo.png" alt="Logo Ialla">
+        <div></div>
+    </header>
+
+    <section style="text-align: center;">
+        <div style=" margin: 15px 0;">
+            <h2>
+                Criar uma conta
+            </h2>
+            <p>
+                Insira seu e-mail para se cadastrar na plataforma
+            </p>
+        </div>
+        
+        <form class="form--login--cad">
+            <input type="email" name="Email" id="email" placeholder="email@dominio.com" required>
+
+            <input class="botao--preto botao--preto--grande" type="button" value="Continuar" onclick="verificarEmail()">
+            <p style="text-align: center;">ou</p>
+            <button class="oauth-btn btn-google" type="button" aria-label="Continuar com o Google">
+                <span class="icon-wrap">
+                    <img src="../icons/google.svg" alt="">
+                </span>
+                <span>Continuar com o Google</span>
+            </button>
+
+            <button class="oauth-btn btn-apple" type="button" aria-label="Continuar com a Apple">
+                <span class="icon-wrap">
+                    <img src="../icons/apple.svg" alt="">
+                </span>
+                <span>Continuar com a Apple</span>
+            </button>
+        </form>
+        <p style="font-size: 12px; margin-top: 24px;">
+                Ao clicar em continuar, você concorda com os nossos <br/>
+            <a style="font-size: 12px; font-weight: 800;">Termos de Serviço</a> 
+                e com a 
+            <a style="font-size: 12px; font-weight: 800;">Política de Privacidade.</a>
+        </p>
+
+        <p style="font-size: 12px; margin-top: 32px;">
+            Já possui uma conta? 
+            <a style="font-size: 12px; font-weight: 800;" href="login.html">Entre.</a>
+        </p>
+    </section>
+
+    <script src="../main.js"></script>
+</body>
+</html>

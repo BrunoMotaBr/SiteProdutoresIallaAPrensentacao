@@ -1,0 +1,362 @@
+/* perfil.css */
+:root{
+  --bg:#ffffff;
+  --texto:#222;
+  --texto-suave:#666;
+  --borda:#e7e7e7;
+  --realce:#111;
+  --fundo-card:#fafafa;
+}
+
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; background:var(--bg); color:var(--texto); font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji"; }
+
+/* === CONTAINER PADRÃO (usando sua classe conteudo2) === */
+.conteudo2{
+  max-width:1100px;
+  margin:24px auto 64px;
+  padding:0 16px;
+  display:block;            /* evita layout "vazio" por flex */
+  width:100%;
+}
+.conteudo2-estreito{        /* variação estreita */
+  max-width:720px;
+  margin-top:32px;
+}
+
+/* ---------- TOPO DO PERFIL ---------- */
+.topo-perfil{
+  display:grid;
+  grid-template-columns: 112px 1fr;
+  gap:24px;
+  align-items:center;
+  margin-bottom:28px;
+}
+
+.avatar{
+  width:112px; height:112px;
+  border-radius:50%;
+  overflow:hidden;
+  border:1px solid var(--borda);
+  background:#fff;
+}
+.avatar img{ width:100%; height:100%; object-fit:cover; }
+
+.info-perfil{ min-width:0;  }
+
+.linha-titulo{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.nome-perfil{
+  font-size:1.5rem; line-height:1.2; margin:0;
+  letter-spacing:.02em;
+}
+
+.botao-editar{
+  padding:10px 14px;
+  border:1px solid var(--borda);
+  background:#fff;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  font-size: 12px;
+}
+.botao-editar:hover{ background:var(--fundo-card); }
+
+.status{
+  margin:8px 0 16px;
+  color:var(--texto-suave);
+}
+
+/* Abas/contadores */
+.abas-metricas{
+  display:inline-flex;
+  border:1px solid var(--borda);
+  border-radius:12px;
+  overflow:hidden;
+}
+.aba{
+  padding:10px 14px;
+  border:0;
+  background:#fff;
+  color:var(--texto-suave);
+  cursor:pointer;
+  font-weight:600;
+}
+.aba + .aba{ border-left:1px solid var(--borda); }
+.aba .valor{ color:var(--realce); font-weight:800; margin-right:6px; }
+.aba.ativa{ background:var(--fundo-card); }
+
+/* ---------- GALERIA ---------- */
+.galeria{ margin-top:8px; }
+
+/* grade responsiva, quadrados */
+.grade-galeria{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:14px;
+}
+.grade-galeria img{
+  width:250px;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:10px;
+  border:1px solid var(--borda);
+  background:#eee;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width:900px){
+  .grade-galeria{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width:640px){
+  .topo-perfil{
+    grid-template-columns: 72px 1fr;
+    gap:14px;
+  }
+  .avatar{ width:72px; height:72px; }
+  .nome-perfil{ font-size:1.2rem; }
+  .grade-galeria{ grid-template-columns: 1fr 1fr; }
+}
+
+/* ====== AppBar (se usar) ====== */
+.appbar{
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  gap: 8px;
+  height: 56px;            /* altura padrão de appbar */
+  background: #111;
+  color: #fff;
+  padding: 0 8px;
+  z-index: 10;
+}
+.appbar h1{ margin: 0; text-align: center; font-size: 1.1rem; font-weight: 700; }
+.appbar-voltar{
+  width: 40px; height: 40px;
+  border: 0; border-radius: 8px; background: transparent; color: #fff;
+  cursor: pointer; font-size: 1.2rem;
+}
+.appbar-voltar:hover{ background: rgba(255,255,255,.08); }
+.appbar-espaco{ width: 40px; }
+
+/* ====== Form genérico ====== */
+.conteudo-estreito{ margin-top: 32px; }
+
+.editar-topo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.avatar-grande{ width: 120px; height: 120px; }
+.link-acao{
+  background: none; border: 0; padding: 0; cursor: pointer;
+  color: var(--texto-suave); font-weight: 600;
+}
+.link-acao:hover{ color: var(--realce); }
+
+.form-editar{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  padding: 20px;
+}
+.campo{ display: grid; gap: 6px; width: 500px;}
+.rotulo{ font-size: .9rem; color: var(--texto-suave); }
+.entrada{
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+}
+.entrada:focus{
+  border-color: #bbb;
+  box-shadow: 0 0 0 3px rgba(0,0,0,.04);
+}
+
+.acoes-form{
+  margin-top: 8px;
+  display: flex; gap: 10px; justify-content: center;
+}
+.btn{
+  height: 40px; padding: 0 16px; border-radius: 10px; font-weight: 700; cursor: pointer;
+  border: 1px solid var(--borda); background: #fff;
+}
+.btn-primario{ background: #111; color: #fff; border-color: #111; }
+.btn-primario{display:flex; justify-content: center;align-items: center;font-size:  12px;}
+.btn-primario:hover{ filter: brightness(1.05); }
+.btn-secundario:hover{ background: var(--fundo-card); }
+
+@media (max-width:640px){
+  .conteudo-estreito{ margin-top: 20px; padding: 0 8px; }
+  .avatar-grande{ width: 96px; height: 96px; }
+}
+
+/* ====== Criar Cardápio / Etapa 1 ====== */
+.linha-topo{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px;
+}
+.titulo-pagina{ margin:0; font-size:1.25rem; }
+.acoes-topo{ display:flex; gap:8px;}
+.btn.icone .emoji{ margin-right:6px; }
+.btn .lbl{ font-weight:700; }
+
+.form-cardapio{
+  margin-top: 150px;
+  display:flex;
+  width: 100%;
+  gap:50px;
+  background:#fff;
+  border:1px solid var(--borda);
+  border-radius:14px;
+  padding:20px;
+  justify-content: space-between;
+}
+
+/* select com chevron */
+.select-wrap{ position:relative; }
+.select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  padding-right:34px;
+  background:#fff;
+}
+.chevron{
+  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  pointer-events:none; color:#777;
+}
+
+/* Dropzone */
+.dropzone{
+  margin-top:8px;
+  border:1px dashed #cfcfcf;
+  background:#fff;
+  border-radius:14px;
+  min-height:180px;
+  display:flex; align-items:center; justify-content:center;
+}
+.dropzone-hover{ background:#fafafa; border-color:#bdbdbd; }
+.drop-btn{
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  border:0; background:transparent; cursor:pointer; padding:24px;
+}
+.plus{
+  width:40px; height:40px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid #bdbdbd; font-size:24px; color:#666;
+}
+.dz-text{ color:var(--texto-suave); }
+
+/* lista de arquivos adicionados (preview simples) */
+.lista-arquivos{ margin-top:10px; display:grid; gap:8px; }
+.item-arquivo{
+  display:flex; justify-content:space-between; align-items:center;
+  border:1px solid var(--borda); border-radius:10px; padding:8px 12px; background:#fff;
+}
+.item-arquivo .nome{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%; }
+.item-arquivo .tam{ color:#777; font-size:.9rem; }
+
+@media (max-width:640px){
+  .dropzone{ min-height:150px; }
+}
+
+/* ====== Criar Cardápio 2 / Categorias & Itens ====== */
+.tabs-cat{ display:flex; gap:8px; margin:8px 0 16px; flex-wrap:wrap; }
+.tab{
+  padding:8px 12px; border:1px solid var(--borda); background:#fff; border-radius:8px; cursor:pointer; font-weight:700;
+}
+.tab.ativa{ background:#111; color:#fff; border-color:#111; }
+.tab.fantasma{ background:#fff; width:42px; text-align:center; }
+
+.cat-conteudo{ display:grid; gap:14px; }
+.linha-cat-titulo{ display:flex; }
+.entrada-grande{ height:44px; font-size:1rem; }
+
+.lista-itens{ display:grid; gap:14px; }
+.item-card{
+  display:grid; grid-template-columns: 140px 1fr; gap:16px;
+  border:1px solid var(--borda); border-radius:12px; padding:14px; background:#fff;
+  position:relative;
+}
+.item-card .x{
+  position:absolute; right:10px; top:8px; border:0; background:transparent; font-size:22px; cursor:pointer; color:#777;
+}
+
+/* Drop mini */
+.dropzone.mini{
+  border:1px dashed #cfcfcf; border-radius:12px; min-height:140px;
+  display:flex; align-items:center; justify-content:center; background:#fff;
+}
+.dropzone-hover{ background:#fafafa; border-color:#bdbdbd; }
+.drop-btn{ border:0; background:transparent; cursor:pointer; padding:0; text-align:center; }
+.dropzone.mini img{ width:100%; height:100%; object-fit:cover; border-radius:12px; }
+.plus{ width:40px; height:40px; border:1px solid #bdbdbd; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#666; margin:0 auto 8px; }
+.dz-text{ color:var(--texto-suave); font-size:.92rem; }
+
+.form-item{ display:grid; gap:8px; }
+.linha-acoes{ margin-top:6px; }
+
+@media (max-width:720px){
+  .item-card{ grid-template-columns: 1fr; }
+}
+/* ===== Editar Evento ===== */
+.form-evento{
+  display: grid;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+/* bloco do banner */
+.banner-bloco{ display: grid; gap: 10px; }
+.banner-preview{
+  width: 100%;
+  aspect-ratio: 16/6;            /* faixa larga como no print */
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f2f2f2;
+  display: flex; align-items: center; justify-content: center;
+}
+.banner-preview img{
+  width: 100%; height: 100%; object-fit: cover;
+}
+.banner-preview.hover{ outline: 3px dashed #bbb; outline-offset: -6px; }
+.banner-acoes{ display: flex; gap: 10px; }
+/* Criar evento 3 */
+.bloco-ingressos{ display:grid; gap:10px; margin-bottom:16px; }
+.grupo-inline{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+.input-prefixo{
+  display:flex; align-items:center; gap:6px;
+  border:1px solid var(--borda); border-radius:10px;
+  padding:0 8px; height:40px; background:#fff;
+}
+.input-prefixo > input{
+  border:0; outline:none; height:100%; width:120px; padding:0;
+}
+
+.lista-ingressos{ display:grid; gap:8px; }
+.lista-ingressos .ing{
+  display:flex; align-items:center; justify-content:space-between;
+  border:1px solid var(--borda); border-radius:10px; padding:8px 12px; background:#fff;
+}
+.ing .info{ display:flex; gap:12px; color:#555; font-weight:600; }
+.ing .x{ border:0; background:transparent; cursor:pointer; font-size:18px; color:#777; }
+
+.bloco-datahora{ display:grid; gap:12px; max-width:360px; margin-top:10px; }

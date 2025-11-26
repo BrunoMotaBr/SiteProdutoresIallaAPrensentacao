@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Alterar senha</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <script>const id = new URLSearchParams(location.search).get("id");</script>
+  <main class="cx conteudo2">
+    <div class="appbar-local">
+      <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+      <h1>Alterar senha</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+
+      <section class="painel">
+        <form class="card" id="formSenha" onsubmit="return alterarSenha(event)">
+          <h2 class="titulo">Segurança da conta</h2>
+
+          <div class="grid-2">
+            <label class="campo-bloco">
+              <span class="rotulo">Senha atual</span>
+              <div class="senha-wrap">
+                <input class="entrada" type="password" name="senha_atual" required>
+                <button type="button" class="olho" onclick="toggle(this)">👁️</button>
+              </div>
+            </label>
+
+            <label class="campo-bloco">
+              <span class="rotulo">Nova senha</span>
+              <div class="senha-wrap">
+                <input class="entrada" id="nova" type="password" name="nova_senha" required>
+                <button type="button" class="olho" onclick="toggle(this)">👁️</button>
+              </div>
+              <div class="forca" aria-hidden="true"><span id="barra"></span></div>
+              <div class="regras" id="regras">
+                <span id="r8">• mínimo de 8 caracteres</span>
+                <span id="rMai">• 1 letra maiúscula (A-Z)</span>
+                <span id="rMin">• 1 letra minúscula (a-z)</span>
+                <span id="rNum">• 1 número (0-9)</span>
+                <span id="rEsp">• 1 símbolo (!@#$%...)</span>
+              </div>
+            </label>
+
+            <label class="campo-bloco" style="grid-column:1 / -1;">
+              <span class="rotulo">Confirmar nova senha</span>
+              <div class="senha-wrap">
+                <input class="entrada" id="conf" type="password" name="confirmar" required>
+                <button type="button" class="olho" onclick="toggle(this)">👁️</button>
+              </div>
+              <small id="msgConf" class="nota"></small>
+            </label>
+          </div>
+
+          <div class="acoes-h" style="margin-top:8px;">
+            <button class="btn" type="button" onclick="history.back()">Cancelar</button>
+            <div style="flex:1"></div>
+            <button class="btn btn-primario" id="btnSalvar" type="submit" disabled>Salvar nova senha</button>
+          </div>
+
+          <p class="nota">Dica: evite reutilizar senhas e ative 2FA quando disponível.</p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // ===== Regras de senha e medidor de força =====
+    const nova = document.getElementById('nova');
+    const conf = document.getElementById('conf');
+    const barra = document.getElementById('barra');
+    const msgConf = document.getElementById('msgConf');
+    const btnSalvar = document.getElementById('btnSalvar');
+
+    const reqs = {
+      r8:   (s) => s.length >= 8,
+      rMai: (s) => /[A-Z]/.test(s),
+      rMin: (s) => /[a-z]/.test(s),
+      rNum: (s) => /\d/.test(s),
+      rEsp: (s) => /[^A-Za-z0-9]/.test(s),
+    };
+
+    function paintRegras(s){
+      let score = 0;
+      for (const id in reqs){
+        const ok = reqs[id](s);
+        document.getElementById(id).className = ok ? 'ok' : 'bad';
+        if(ok) score++;
+      }
+      const pct = (score/5)*100;
+      barra.style.width = pct + '%';
+      barra.style.background = score < 3 ? '#ef4444' : score < 5 ? '#f59e0b' : '#16a34a';
+      validarTudo();
+    }
+
+    function validarTudo(){
+      const iguais = nova.value && conf.value && nova.value === conf.value;
+      msgConf.textContent = iguais ? 'Senhas conferem.' : (conf.value ? 'As senhas não conferem.' : '');
+      msgConf.style.color = iguais ? '#16a34a' : '#b91c1c';
+
+      const forte = Object.values(reqs).every(fn => fn(nova.value||''));
+      btnSalvar.disabled = !(iguais && forte && document.querySelector('[name="senha_atual"]').value.trim());
+    }
+
+    nova.addEventListener('input', () => { paintRegras(nova.value); });
+    conf.addEventListener('input', validarTudo);
+    document.querySelector('[name="senha_atual"]').addEventListener('input', validarTudo);
+
+    // mostrar/ocultar
+    function toggle(btn){
+      const inp = btn.previousElementSibling;
+      inp.type = (inp.type === 'password') ? 'text' : 'password';
+    }
+
+    // ===== Submit =====
+    async function alterarSenha(ev){
+      ev.preventDefault();
+      const atual = document.querySelector('[name="senha_atual"]').value;
+      const novaSenha = nova.value;
+
+      // TODO: integrar API real:
+      // const r = await fetch('/conta/alterar-senha', {
+      //   method:'POST',
+      //   headers:{'Content-Type':'application/json'},
+      //   body: JSON.stringify({ senhaAtual: atual, novaSenha })
+      // });
+      // if(!r.ok){
+      //   const j = await r.json().catch(()=>({}));
+      //   alert('Falha ao alterar senha: ' + (j?.erro || r.status));
+      //   return false;
+      // }
+
+      alert('Senha alterada com sucesso!');
+      // Opcional: redirecionar para configurações:
+      // location.href = './configuracoes.html';
+      return false;
+    }
+
+    // inicia estado visual
+    paintRegras('');
+  </script>
+</body>
+</html>

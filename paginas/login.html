@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ialla - Produtores</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header class="cabecalho--login--cad">
+        <button class="btn-voltar" onclick="history.back()" aria-label="Voltar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    width="24" height="24" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+        <img src="../imagens/logo.png" alt="Logo Ialla">
+        <div></div>
+    </header>
+
+    <section>
+        <h2 style="text-align: center; margin-top: 15px;">
+            Entrar
+        </h2>
+        <form class="form--login--cad">
+            <label for="email">E-mail</label>
+            <input type="email" name="email" id="email">
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" id="senha">
+            <a>Esqueceu a senha?</a>
+            <input class="botao--preto botao--preto--grande" type="button" value="Iniciar sessão" onclick="login()">
+            <p style="text-align: center;">ou</p>
+            <button class="oauth-btn btn-google" type="button" aria-label="Continuar com o Google">
+                <span class="icon-wrap">
+                    <img src="../icons/google.svg" alt="">
+                </span>
+                <span>Continuar com o Google</span>
+            </button>
+
+            <button class="oauth-btn btn-apple" type="button" aria-label="Continuar com a Apple">
+                <span class="icon-wrap">
+                    <img src="../icons/apple.svg" alt="">
+                </span>
+                <span>Continuar com a Apple</span>
+            </button>
+        </form>
+    </section>
+    <section style="text-align: center;">
+        <p style="font-size: 12px; margin-top: 24px;">
+                Ainda não tem uma conta? 
+            <a style="font-size: 12px; font-weight: 800;" href="criarConta.html">Cadastre-se.</a>
+        </p>
+    </section>
+    <script src="../main.js"></script>
+</body>
+</html>

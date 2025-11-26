@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar evento</title>
+  <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="cabecalho">
+    <script src="../componente/cabecalho.render.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      console.log(id)
+      renderCabecalho(".cabecalho", id);
+      const link = document.getElementsByClassName("btn-primario");
+      link.href = `ver-evento.html?id=${id}`;
+    </script>
+  </header>
+
+  <main class="conteudo2 conteudo2-estreito" style="margin-top: 150px;">
+    <div class="linha-topo">
+      <h2 class="titulo-pagina">Editar evento</h2>
+      <div class="acoes-topo">
+        <button class="btn icone" type="button" title="Salvar" onclick="salvarEdicao()">
+          <span class="emoji">💾</span> <span class="lbl">Salvar</span>
+        </button>
+        <a class="btn btn-primario" href="ver-evento.html" title="Editar evento">Ver evento</a>
+      </div>
+    </div>
+
+    <form class="form-evento" onsubmit="event.preventDefault();">
+      <!-- Nome e categoria -->
+      <label class="campo">
+        <span class="rotulo">Nome</span>
+        <input class="entrada" type="text" name="nome" value="FLASHBACK" placeholder="Nome do evento">
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Categoria</span>
+        <div class="select-wrap">
+          <select class="entrada select" name="categoria">
+            <option selected>Shows e festivais</option>
+            <option>Workshops</option>
+            <option>Conferências</option>
+            <option>Teatro</option>
+          </select>
+          <span class="chevron">▾</span>
+        </div>
+      </label>
+
+      <!-- Banner -->
+      <div class="banner-bloco">
+        <div class="banner-preview" id="bannerPreview"
+             ondragenter="evDragEnter(event)" ondragover="evDragEnter(event)"
+             ondragleave="evDragLeave(event)" ondrop="evDrop(event)">
+          <img id="bannerImg" src="../imagens/evento-suzaninho.jpg" alt="Banner do evento">
+        </div>
+        <div class="banner-acoes">
+          <input id="bannerInput" type="file" accept="image/*" hidden>
+          <button class="btn" type="button" onclick="document.getElementById('bannerInput').click()">Alterar / Add banner</button>
+        </div>
+      </div>
+
+      <!-- Endereço -->
+      <label class="campo">
+        <span class="rotulo">Nome do local</span>
+        <input class="entrada" type="text" name="local_nome" value="Arena Central" placeholder="Ex.: Arena Central">
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">CEP</span>
+        <input class="entrada" type="text" name="cep" inputmode="numeric" value="65000-000" placeholder="00000-000" maxlength="9">
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Estado</span>
+        <div class="select-wrap">
+          <select class="entrada select" name="estado">
+            <option value="">Selecione o estado</option>
+            <option value="MA" selected>MA - Maranhão</option>
+            <option value="SP">SP - São Paulo</option>
+            <option value="RJ">RJ - Rio de Janeiro</option>
+          </select>
+          <span class="chevron">▾</span>
+        </div>
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Cidade</span>
+        <div class="select-wrap">
+          <select class="entrada select" name="cidade">
+            <option value="">Selecione a cidade</option>
+            <option selected>São Luís</option>
+          </select>
+          <span class="chevron">▾</span>
+        </div>
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Número</span>
+        <input class="entrada" type="text" name="numero" value="123" placeholder="Ex.: 123">
+      </label>
+
+      <!-- Ingressos -->
+      <section class="bloco-ingressos">
+        <span class="rotulo">Ingresso(s)</span>
+
+        <div class="grupo-inline">
+          <input class="entrada" id="ingNome" placeholder="Nome da categoria">
+
+          <div class="input-prefixo">
+            <span>R$</span>
+            <input class="entrada" id="ingPreco" inputmode="decimal" placeholder="0,00">
+          </div>
+
+          <input class="entrada" id="ingQtd" inputmode="numeric" placeholder="Quantidade">
+          <button class="btn" type="button" id="addIng">+</button>
+        </div>
+
+        <div id="listaIngressos" class="lista-ingressos"></div>
+      </section>
+
+      <!-- Data e Horário -->
+      <section class="bloco-datahora">
+        <label class="campo">
+          <span class="rotulo">Data</span>
+          <input class="entrada" type="date" name="data" value="2025-09-05">
+        </label>
+
+        <label class="campo">
+          <span class="rotulo">Horário</span>
+          <input class="entrada" type="time" name="hora" value="22:00">
+        </label>
+      </section>
+    </form>
+  </main>
+
+  <script>
+    /* ---- Salvar ---- */
+    function salvarEdicao(){
+      alert('Evento atualizado!');
+      // se quiser redirecionar: window.location.href = 'dashboarde.html';
+    }
+  </script>
+
+  <script>
+    /* ---- Preview banner ---- */
+    const inp = document.getElementById('bannerInput');
+    const img = document.getElementById('bannerImg');
+    const prev = document.getElementById('bannerPreview');
+
+    inp.addEventListener('change', () => {
+      const file = inp.files[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = () => { img.src = r.result; prev.classList.remove('hover'); };
+      r.readAsDataURL(file);
+      inp.value = '';
+    });
+
+    function evDragEnter(e){ e.preventDefault(); prev.classList.add('hover'); }
+    function evDragLeave(e){ e.preventDefault(); prev.classList.remove('hover'); }
+    function evDrop(e){
+      e.preventDefault(); prev.classList.remove('hover');
+      const file = (e.dataTransfer?.files||[])[0];
+      if (!file) return;
+      const r = new FileReader();
+      r.onload = () => { img.src = r.result; };
+      r.readAsDataURL(file);
+    }
+  </script>
+
+  <script>
+    /* ---- Ingressos (pré-carregados + edição) ---- */
+    const ingressos = [
+      { id: 'i1', nome: 'Pista',  preco: 30.00, qtd: 200 },
+      { id: 'i2', nome: 'VIP',    preco: 60.00, qtd: 80  },
+    ];
+    const elNome = document.getElementById('ingNome');
+    const elPreco = document.getElementById('ingPreco');
+    const elQtd = document.getElementById('ingQtd');
+    const elLista = document.getElementById('listaIngressos');
+
+    // máscara moeda
+    elPreco.addEventListener('input', () => {
+      let v = elPreco.value.replace(/[^\d]/g, '');
+      if (!v) { elPreco.value = ''; return; }
+      v = (parseInt(v, 10) / 100).toFixed(2).replace('.', ',');
+      elPreco.value = v;
+    });
+    // quant somente números
+    elQtd.addEventListener('input', () => {
+      elQtd.value = elQtd.value.replace(/\D/g, '').slice(0, 6);
+    });
+
+    document.getElementById('addIng').addEventListener('click', () => {
+      const nome = elNome.value.trim();
+      const precoStr = elPreco.value.trim().replace(/\./g,'').replace(',','.');
+      const qtdStr = elQtd.value.trim();
+
+      if (!nome || !precoStr || !qtdStr) return alert('Preencha nome, preço e quantidade.');
+
+      const preco = Number(precoStr);
+      const qtd = Number(qtdStr);
+      if (isNaN(preco) || isNaN(qtd) || preco <= 0 || qtd <= 0) {
+        return alert('Preço e quantidade devem ser válidos.');
+      }
+
+      ingressos.push({ id: crypto.randomUUID?.() || String(Math.random()), nome, preco, qtd });
+      elNome.value = ''; elPreco.value = ''; elQtd.value = '';
+      renderIngressos();
+    });
+
+    function renderIngressos(){
+      elLista.innerHTML = ingressos.map(i => `
+        <div class="ing">
+          <div class="info">
+            <span>${i.nome}</span>
+            <span>R$ ${i.preco.toFixed(2).replace('.', ',')}</span>
+            <span>Qtd: ${i.qtd}</span>
+          </div>
+          <button class="x" type="button" onclick="remIng('${i.id}')">×</button>
+        </div>
+      `).join('');
+    }
+
+    window.remIng = function(id){
+      const idx = ingressos.findIndex(x => x.id === id);
+      if (idx >= 0) { ingressos.splice(idx, 1); renderIngressos(); }
+    };
+
+    // inicializa lista com os pré-carregados
+    renderIngressos();
+  </script>
+
+  <script>
+    /* ---- Máscara CEP ---- */
+    document.querySelector('input[name="cep"]').addEventListener('input', function(){
+      let v = this.value.replace(/\D/g,'').slice(0,8);
+      if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+      this.value = v;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+:root {
+    --borda: #cbd5e1; /* slate-300 */
+    --borda-focus: #3b82f6; /* blue-500 */
+    --bg: #ffffff;
+    --texto: #0f172a; /* slate-900 */
+    --placeholder: #94a3b8; /* slate-400 */
+    --icone: #64748b; /* slate-500 */
+}
+
+.chat-input {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    width: 93%;
+    gap: 15px;
+    padding: 6px 8px;
+    background: var(--bg);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
+    transition: border-color 160ms, box-shadow 160ms;
+    position: absolute;
+    bottom: 5px;
+}
+
+
+.chat-input:focus-within {
+    border-color: var(--borda-focus);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
+}
+
+
+.chat-input__btn {
+    appearance: none; 
+    border: 0; 
+    background: transparent; 
+    padding: 8px; 
+    margin: 0;
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 6px; 
+    cursor: pointer;
+    color: var(--icone); 
+    width: 25px; 
+    height: 25px;
+    position: absolute;
+    left: -45px;
+}
+.chat-input__btn:first-child{
+    left: -65px;
+}
+
+.chat-input__btn img{
+    width: 20px;
+    height: 20px;
+}
+
+.botoes-mensagens{
+    display: flex;
+    width: 25px;
+    height: 25px;
+    position: relative;
+}
+
+
+.chat-input__btn:hover { 
+    background: #f1f5f9; 
+}
+
+.chat-input__btn:active { 
+    transform: translateY(1px); 
+}
+
+
+.chat-input__field {
+    border: 0; 
+    outline: none; 
+    background: transparent;
+    padding: 8px; 
+    font-size: 15px; 
+    line-height: 1.4; 
+    color: var(--texto);
+}
+
+
+.chat-input__field::placeholder { 
+    color: var(--placeholder); 
+}
+
+.sr-only { 
+    position: absolute; 
+    width: 1px; height: 1px; 
+    padding: 0; margin: -1px; 
+    overflow: hidden; 
+    clip: rect(0,0,0,0); 
+    white-space: nowrap; 
+    border: 0; 
+}
+
+.card {
+    background: #fff; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 12px; 
+    padding: 16px; 
+    box-shadow: 0 1px 2px rgba(0,0,0,.03);
+}

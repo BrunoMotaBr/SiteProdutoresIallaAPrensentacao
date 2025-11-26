@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sobre a plataforma</title>
+<link rel="stylesheet" href="../css/configuracoes.css">
+</head><body>
+  <script>const id = new URLSearchParams(location.search).get("id");</script>
+<main class="cx conteudo2">
+  <div class="appbar-local">
+    <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+    <h1>Sobre a plataforma</h1><div class="ghost"></div></div>
+  <div class="grid">
+    <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+    <section class="painel card sobre">
+      <img class="logo-sobre" src="../imagens/logo.png" alt="Logo">
+      <h2 class="titulo">O que é o Ialla</h2>
+      <p>Ialla é um hub inteligente de eventos que conecta pessoas e empresas por meio de experiências, promoções e locais, com recomendações personalizadas e ferramentas para organizadores.</p>
+      <h3>Principais recursos</h3>
+      <ul>
+        <li>Descoberta e recomendação de eventos</li>
+        <li>Comunidades e interações em tempo real</li>
+        <li>Ticketing e check-in</li>
+        <li>Relatórios para produtores</li>
+      </ul>
+      <h3>Contato oficial</h3>
+      <p>E-mail: <b>contato@ialla.app</b> · Suporte: <b>suporte@ialla.app</b></p>
+      <p class="nota">© <span id="ano"></span> Ialla. Todos os direitos reservados.</p>
+    </section>
+  </div>
+</main>
+<script>document.getElementById('ano').textContent=new Date().getFullYear();</script>
+</body></html>

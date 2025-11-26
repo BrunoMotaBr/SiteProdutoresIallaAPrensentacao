@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil do Produtor</title>
+  <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../style.css">
+
+  <!-- scripts globais -->
+  <script src="../main.js"></script>
+  <script src="../componente/cabecalho.render.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="cabecalho"></header>
+
+  <main class="conteudo" style="display: flex; flex-direction: column;">
+    <section class="topo-perfil">
+      <div class="avatar">
+        <img src="../imagens/image.png" alt="Logo Ialla Produções">
+      </div>
+
+      <div class="info-perfil">
+        <div class="linha-titulo">
+          <h1 class="nome-perfil">IALLA PRODUÇÕES</h1>
+          <a class="botao-editar" href="editar-perfil.html">Editar perfil</a>
+        </div>
+
+        <p class="status">
+          <strong>Status:</strong> Proporcionando experiências incríveis!
+        </p>
+
+        <div class="abas-metricas">
+          <button class="aba ativa" type="button">
+            <span class="valor">100</span> Seguidores
+          </button>
+          <button class="aba" type="button">
+            <span class="valor">30</span> Eventos
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="galeria">
+      <div class="grade-galeria">
+        <img src="../imagens/evento-suzaninho.jpg" alt="Suzaninho">
+        <img src="../imagens/evento-halloween.jpg" alt="Halloween">
+        <img src="../imagens/evento-show.jpg" alt="Show">
+        <img src="../imagens/evento-music-31.jpg" alt="Music 31">
+        <img src="../imagens/evento-technology-31.jpg" alt="Technology 31">
+        <img src="../imagens/evento-technology-31b.jpg" alt="Technology 31B">
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      if (typeof renderCabecalho === "function") {
+        renderCabecalho(".cabecalho", id);
+      }
+
+      const nomePerfilEl = document.querySelector(".nome-perfil");
+      const avatarEl = document.querySelector(".topo-perfil .avatar img");
+      const botaoEditar = document.querySelector(".botao-editar");
+
+      if (botaoEditar && id) {
+        botaoEditar.href = `editar-perfil.html?id=${id}`;
+      }
+
+      if (!id || typeof pegarDados !== "function") {
+        return;
+      }
+
+      try {
+        const [resp, baseUrl] = await pegarDados(id);
+
+        if (resp && resp.resposta && resp.resultado) {
+          const emp = resp.resultado;
+
+          if (emp.nome && nomePerfilEl) {
+            nomePerfilEl.textContent = emp.nome;
+          }
+
+          if (emp.foto_perfil && avatarEl) {
+            const src = emp.foto_perfil.startsWith("http")
+              ? emp.foto_perfil
+              : `${baseUrl}${emp.foto_perfil}`;
+            avatarEl.src = src;
+            avatarEl.alt = emp.nome || "Logo do produtor";
+          }
+        }
+      } catch (e) {
+        console.error("Erro ao carregar dados do perfil:", e);
+      }
+    });
+  </script>
+
+</body>
+</html>

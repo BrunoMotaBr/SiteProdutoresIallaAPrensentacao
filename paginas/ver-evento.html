@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evento (visualização)</title>
+  <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* Deixa entradas/selects visualmente "read-only" */
+    .entrada[readonly],
+    .entrada:disabled {
+      background: #f9f9f9;
+      color: #444;
+      cursor: default;
+    }
+    .select:disabled { appearance: none; -webkit-appearance: none; -moz-appearance: none; }
+    .chevron { opacity: .35; }
+    .acoes-topo .btn-primario { background:#111; color:#fff; border-color:#111; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="cabecalho">
+    <script src="../componente/cabecalho.render.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      console.log(id)
+      renderCabecalho(".cabecalho", id);
+      const link = document.getElementById("link");
+      link.href = `editar-evento.html?id=${id}`;
+    </script>
+  </header>
+
+  <main class="conteudo2 conteudo2-estreito"style="margin-top: 150px;">
+    <div class="linha-topo">
+      <h2 class="titulo-pagina">Evento</h2>
+      <div class="acoes-topo">
+        <!-- leva para a versão editável -->
+        <a class="btn btn-primario" id="link" href="editar-evento.html" title="Editar evento">Editar evento</a>
+      </div>
+    </div>
+
+    <form class="form-evento" onsubmit="return false;">
+      <!-- Nome e categoria -->
+      <label class="campo">
+        <span class="rotulo">Nome</span>
+        <input class="entrada" type="text" name="nome" value="FLASHBACK" readonly>
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Categoria</span>
+        <div class="select-wrap">
+          <select class="entrada select" name="categoria" disabled>
+            <option selected>Shows e festivais</option>
+            <option>Workshops</option>
+            <option>Conferências</option>
+            <option>Teatro</option>
+          </select>
+          <span class="chevron">▾</span>
+        </div>
+      </label>
+
+      <!-- Banner (somente visualização) -->
+      <div class="banner-bloco">
+        <div class="banner-preview" id="bannerPreview">
+          <img id="bannerImg" src="../imagens/evento-suzaninho.jpg" alt="Banner do evento">
+        </div>
+      </div>
+
+      <!-- Endereço -->
+      <label class="campo">
+        <span class="rotulo">Nome do local</span>
+        <input class="entrada" type="text" name="local_nome" value="Arena Central" readonly>
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">CEP</span>
+        <input class="entrada" type="text" name="cep" value="65000-000" readonly>
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Estado</span>
+        <div class="select-wrap">
+          <select class="entrada select" name="estado" disabled>
+            <option value="">Selecione o estado</option>
+            <option value="MA" selected>MA - Maranhão</option>
+            <option value="SP">SP - São Paulo</option>
+            <option value="RJ">RJ - Rio de Janeiro</option>
+          </select>
+          <span class="chevron">▾</span>
+        </div>
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Cidade</span>
+        <div class="select-wrap">
+          <select class="entrada select" name="cidade" disabled>
+            <option>São Luís</option>
+          </select>
+          <span class="chevron">▾</span>
+        </div>
+      </label>
+
+      <label class="campo">
+        <span class="rotulo">Número</span>
+        <input class="entrada" type="text" name="numero" value="123" readonly>
+      </label>
+
+      <!-- Ingressos (lista somente leitura) -->
+      <section class="bloco-ingressos">
+        <span class="rotulo">Ingresso(s)</span>
+        <div id="listaIngressos" class="lista-ingressos"></div>
+      </section>
+
+      <!-- Data e Horário -->
+      <section class="bloco-datahora">
+        <label class="campo">
+          <span class="rotulo">Data</span>
+          <input class="entrada" type="date" name="data" value="2025-09-05" readonly>
+        </label>
+        <label class="campo">
+          <span class="rotulo">Horário</span>
+          <input class="entrada" type="time" name="hora" value="22:00" readonly>
+        </label>
+      </section>
+    </form>
+  </main>
+
+  <script>
+    // Preenche a lista de ingressos em modo leitura
+    const ingressos = [
+      { id: 'i1', nome: 'Pista', preco: 30.00, qtd: 200 },
+      { id: 'i2', nome: 'VIP',   preco: 60.00, qtd: 80  },
+    ];
+    const elLista = document.getElementById('listaIngressos');
+
+    function renderIngressos(){
+      elLista.innerHTML = ingressos.map(i => `
+        <div class="ing">
+          <div class="info">
+            <span>${i.nome}</span>
+            <span>R$ ${i.preco.toFixed(2).replace('.', ',')}</span>
+            <span>Qtd: ${i.qtd}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderIngressos();
+  </script>
+</body>
+</html>

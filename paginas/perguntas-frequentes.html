@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Perguntas frequentes</title>
+<link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+<script>const id = new URLSearchParams(location.search).get("id");</script>
+
+<main class="cx conteudo2">
+  <div class="appbar-local">
+    <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+    <h1>Perguntas frequentes</h1><div class="ghost"></div></div>
+  <div class="grid">
+    <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+    <section class="painel card">
+      <div class="faq" id="faq">
+        <!-- itens -->
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+const itens=[
+  {q:'Como crio meu primeiro evento na plataforma?',a:'Após realizar o cadastro, acesse o menu superior e clique em "Meus eventos". Em seguida, selecione o ícone “+” para criar um novo evento. Preencha as informações básicas e configure os ingressos conforme desejado.'},
+  {q:'Posso limitar a quantidade de ingressos disponíveis?',a:'Sim. Você pode limitar a quantidade de ingressos disponíveis para cada categoria.'},
+  {q:'É possível personalizar os tipos de ingresso?',a:'Ao criar o evento, é possível definir tipos como Camarote, Frontstage, Pista ou outros, cada um com seu próprio lote e quantidade máxima de ingressos'},
+  {q:'Como excluir minha conta?',a:'Abra Configurações → Antes de partir → Excluir conta.'},
+];
+const el=document.getElementById('faq');
+el.innerHTML=itens.map((i,idx)=>`
+  <div class="qa" onclick="this.classList.toggle('abrir')">
+    <div class="q"><strong>${i.q}</strong><span>▾</span></div>
+    <div class="a">${i.a}</div>
+  </div>
+`).join('');
+</script>
+</body></html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Criar cardápio 2</title>
+  <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <!-- HEADER (mantém seu componente) -->
+  <header class="cabecalho">
+    <script src="../componente/cabecalho.render.js"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      console.log(id)
+      renderCabecalho(".cabecalho", id);
+    </script>
+  </header>
+
+  <main class="conteudo2 conteudo2-estreito" style="margin-top: 150px;">
+    
+
+    <!-- Abas de categoria -->
+    <div class="tabs-cat" id="tabsCat"></div>
+
+    <!-- Conteúdo da categoria ativa -->
+    <section id="categoriaConteudo" class="cat-conteudo"></section>
+
+    <div class="linha-acoes">
+      <button id="btnAddItem" class="btn">Adicionar Item</button>
+    </div>
+  </main>
+
+  <script>
+    /* ========= Estado básico ========= */
+    const state = {
+      categorias: [
+        { id: cid(), nome: "Adicionar categoria", itens: [novoItem(), novoItem()] },
+        { id: cid(), nome: "Adicionar categoria", itens: [] },
+      ],
+      ativa: 0, // 0 = aba “Adicionar categoria”
+    };
+
+    /* ========= Utils ========= */
+    function cid(){ return "c" + Math.random().toString(36).slice(2,9); }
+    function iid(){ return "i" + Math.random().toString(36).slice(2,9); }
+    function novoItem(){ return { id: iid(), nome:"", descricao:"", preco:"", img:null, imgName:"" }; }
+
+    /* ========= Render ========= */
+    const tabs = document.getElementById('tabsCat');
+    const conteudo = document.getElementById('categoriaConteudo');
+
+    function render(){
+      tabs.innerHTML = `
+        <button class="tab ${state.ativa===0?'ativa':''}" onclick="ativar(0)">Adicionar categoria</button>
+        ${state.categorias.map((c,idx)=>`
+          <button class="tab ${state.ativa===idx+1?'ativa':''}" onclick="ativar(${idx+1})">
+            ${c.nome || 'Categoria'}
+          </button>
+        `).join('')}
+        <button class="tab fantasma" onclick="criarCategoria()">+</button>
+      `;
+
+      if(state.ativa===0){
+        conteudo.innerHTML = `
+          <div class="caixa-dica" style="border:1px dashed var(--borda); border-radius:12px; padding:16px; color:var(--texto-suave);">
+            Clique no botão <strong>+</strong> para criar uma nova categoria. Depois, adicione os itens.
+          </div>`;
+        document.getElementById('btnAddItem').disabled = true;
+        return;
+      }
+      document.getElementById('btnAddItem').disabled = false;
+
+      const cat = state.categorias[state.ativa-1];
+      conteudo.innerHTML = `
+        <div class="linha-cat-titulo">
+          <input class="entrada entrada-grande" placeholder="Nome da categoria"
+                 value="${cat.nome||''}" oninput="renomearCategoria(this.value)"/>
+        </div>
+
+        <div class="lista-itens">
+          ${cat.itens.map(itemCard).join('')}
+        </div>
+      `;
+    }
+
+    function itemCard(i){
+      const imgPreview = i.img
+        ? `<img src="${i.img}" alt="preview">`
+        : `<div class="plus">+</div><div class="dz-text">Clique ou arraste para adicionar</div>`;
+      return `
+      <div class="item-card" id="${i.id}">
+        <div class="dropzone mini" ondragenter="dzEnter(event)" ondragover="dzEnter(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,'${i.id}')">
+          <input type="file" hidden id="file-${i.id}" accept="image/*" onchange="selArquivo(event,'${i.id}')">
+          <button class="drop-btn" type="button" onclick="document.getElementById('file-${i.id}').click()">
+            ${imgPreview}
+          </button>
+        </div>
+
+        <div class="form-item">
+          <button class="x" title="Remover" onclick="removerItem('${i.id}')">×</button>
+          <label class="campo"><span class="rotulo">Nome</span>
+            <input class="entrada" type="text" value="${i.nome}"
+                   oninput="atualizarItem('${i.id}','nome', this.value)">
+          </label>
+          <label class="campo"><span class="rotulo">Descrição</span>
+            <input class="entrada" type="text" value="${i.descricao}"
+                   oninput="atualizarItem('${i.id}','descricao', this.value)">
+          </label>
+          <label class="campo"><span class="rotulo">Preço unitário</span>
+            <input class="entrada" type="number" step="0.01" min="0" value="${i.preco}"
+                   oninput="atualizarItem('${i.id}','preco', this.value)">
+          </label>
+        </div>
+      </div>`;
+    }
+
+    /* ========= Ações ========= */
+    function ativar(idx){ state.ativa = idx; render(); }
+    function criarCategoria(){
+      state.categorias.push({ id: cid(), nome: "", itens: [] });
+      state.ativa = state.categorias.length; // foca na nova
+      render();
+    }
+    function renomearCategoria(nome){
+      state.categorias[state.ativa-1].nome = nome;
+      render();
+    }
+    function adicionarItem(){
+      const cat = state.categorias[state.ativa-1];
+      cat.itens.push(novoItem());
+      render();
+    }
+    function removerItem(id){
+      const cat = state.categorias[state.ativa-1];
+      cat.itens = cat.itens.filter(i=>i.id!==id);
+      render();
+    }
+    function atualizarItem(id, campo, valor){
+      const cat = state.categorias[state.ativa-1];
+      const i = cat.itens.find(x=>x.id===id);
+      if(i){ i[campo]=valor; }
+    }
+
+    // Upload/drag
+    function dzEnter(ev){ ev.preventDefault(); ev.currentTarget.classList.add('dropzone-hover'); }
+    function dzLeave(ev){ ev.preventDefault(); ev.currentTarget.classList.remove('dropzone-hover'); }
+    function dzDrop(ev, id){
+      ev.preventDefault();
+      ev.currentTarget.classList.remove('dropzone-hover');
+      const file = (ev.dataTransfer?.files||[])[0];
+      if(file) lerArquivo(file, id);
+    }
+    function selArquivo(ev, id){
+      const file = ev.target.files[0];
+      if(file) lerArquivo(file, id);
+      ev.target.value = "";
+    }
+    function lerArquivo(file, id){
+      const reader = new FileReader();
+      reader.onload = () => {
+        const cat = state.categorias[state.ativa-1];
+        const i = cat.itens.find(x=>x.id===id);
+        if(i){ i.img = reader.result; i.imgName = file.name; render(); }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Botão "Adicionar Item"
+    document.getElementById('btnAddItem').addEventListener('click', adicionarItem);
+
+    // Inicializa
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+</body>
+</html>

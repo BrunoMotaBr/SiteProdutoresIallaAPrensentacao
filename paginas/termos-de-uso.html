@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Termos de Uso</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+  <style>
+   
+  </style>
+</head>
+<body>
+  <main class="cx conteudo2">
+    
+    <!-- AppBar local -->
+    <div class="appbar-local">
+      <button class="voltar" onclick="history.back()" aria-label="Voltar">←</button>
+      <h1>Termos de uso</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <!-- Menu lateral -->
+      <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          const id = new URLSearchParams(location.search).get("id");
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+
+      <!-- Conteúdo -->
+      <section class="painel texto">
+
+        <!-- SUMÁRIO -->
+        <div class="sumario">
+          <strong>Sumário</strong>
+          <a href="#1">1. Aceitação</a>
+          <a href="#2">2. Regras de uso</a>
+          <a href="#3">3. Propriedade intelectual</a>
+        </div>
+
+        <h3 id="1">1. Aceitação</h3>
+        <p>
+          Ao usar o IALLA, você concorda com estes termos de uso. Caso não concorde, 
+          pedimos que não utilize a plataforma.
+        </p>
+
+        <h3 id="2">2. Regras de uso</h3>
+        <ul>
+          <li>Não é permitido conteúdo ofensivo, discriminatório, ilegal ou que infrinja direitos autorais.</li>
+          <li> A criação de eventos deve seguir as leis locais e as diretrizes do IALLA.</li>
+          <li>Cada conta é pessoal e intransferível, sendo o usuário responsável por todas as ações realizadas em seu nome.</li>
+          <li> O uso indevido da plataforma pode resultar na suspensão ou exclusão da conta, conforme avaliação da equipe do IALLA.</li>
+        </ul>
+
+        <h3 id="3">3. Propriedade intelectual</h3>
+        <p>
+          A marca <strong>IALLA</strong>, o logotipo, o design do aplicativo e suas funcionalidades 
+          são protegidos por direitos autorais e de propriedade intelectual.  
+          É proibida qualquer reprodução, modificação ou distribuição sem autorização prévia e por escrito.
+        </p>
+
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

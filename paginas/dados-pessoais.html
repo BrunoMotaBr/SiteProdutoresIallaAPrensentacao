@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Dados pessoais</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <script>const id = new URLSearchParams(location.search).get("id");</script>
+
+  <main class="cx conteudo2">
+    <div class="appbar-local">
+      <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+      <h1>Dados pessoais</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <div class="nav-config" id="menu-config"></div>
+      <script src="../componente/menuConfiguracoes.js"></script>
+
+      <section class="painel">
+        <form class="card" id="formDados" onsubmit="return salvarDados(event)">
+          <h2 class="titulo">Seu perfil</h2>
+
+          <div class="linha" style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+            <div class="avatar-circ">
+              <img id="avatarImg" src="../imagens/avatar-padrao.png" alt="Avatar">
+            </div>
+            <div>
+              <input type="file" id="avatarInput" accept="image/*" hidden>
+              <button class="btn" type="button" onclick="document.getElementById('avatarInput').click()">Alterar foto</button>
+              <button class="btn btn-line" type="button" onclick="removerAvatar()">Remover</button>
+              <p class="nota">PNG/JPG até 2MB. Recom. 512×512.</p>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <label class="campo-bloco">
+              <span class="rotulo">Nome da empresa</span>
+              <input class="entrada" name="nome" placeholder="Nome da empresa" required>
+            </label>
+
+            <label class="campo-bloco">
+              <span class="rotulo">CNPJ</span>
+              <input class="entrada" name="cnpj" placeholder="00.000.000/0000-00" readonly>
+            </label>
+
+            <label class="campo-bloco">
+              <span class="rotulo">Cidade</span>
+              <input class="entrada" name="cidade" placeholder="Cidade" required>
+            </label>
+
+            <label class="campo-bloco">
+              <span class="rotulo">Estado (UF)</span>
+              <input class="entrada" name="estado" placeholder="SP" maxlength="2" required>
+            </label>
+
+            <label class="campo-bloco" style="grid-column:1 / -1;">
+              <span class="rotulo">E-mail</span>
+              <input class="entrada" name="email" type="email" placeholder="email@exemplo.com" readonly>
+            </label>
+          </div>
+
+          <div class="acoes-h" style="margin-top:8px;">
+            <button class="btn" type="button" onclick="history.back()">Cancelar</button>
+            <button class="btn btn-danger" type="button" onclick="desativarPerfil()">Desativar perfil</button>
+            <div style="flex:1"></div>
+            <button class="btn" type="submit">Salvar alterações</button>
+          </div>
+
+          <p class="nota">
+            Ao salvar, você concorda com nossos
+            <a id="tu">Termos</a> e
+            <a id="pp">Política</a>.
+          </p>
+        </form>
+      </section>  
+    </div>
+  </main>
+
+  <script src="../main.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", async () => {
+      // Menu lateral
+      if (typeof renderMenuConfiguracoes === "function") {
+        renderMenuConfiguracoes("#menu-config", id);
+      }
+
+      // Links de termos / política
+      const linkTermos = document.getElementById('tu');
+      const linkPolitica = document.getElementById('pp');
+      if (linkTermos && linkPolitica) {
+        if (id) {
+          linkTermos.href = `./termos-de-uso.html?id=${id}`;
+          linkPolitica.href = `./politica-de-privacidade.html?id=${id}`;
+        } else {
+          linkTermos.href = './termos-de-uso.html';
+          linkPolitica.href = './politica-de-privacidade.html';
+        }
+      }
+
+      // Avatar
+      const avatarInput = document.getElementById('avatarInput');
+      const avatarImg   = document.getElementById('avatarImg');
+
+      if (avatarInput && avatarImg) {
+        avatarInput.addEventListener('change', () => {
+          const f = avatarInput.files[0];
+          if (!f) return;
+
+          if (f.size > 2 * 1024 * 1024) {
+            alert('Imagem acima de 2MB.');
+            avatarInput.value = '';
+            return;
+          }
+
+          const r = new FileReader();
+          r.onload = () => {
+            avatarImg.src = r.result;
+          };
+          r.readAsDataURL(f);
+        });
+      }
+
+      window.removerAvatar = function () {
+        if (!avatarInput || !avatarImg) return;
+        avatarInput.value = '';
+        avatarImg.src = '../imagens/avatar-padrao.png';
+      };
+
+      // Telefone
+      const fone = document.querySelector('[name="fone"]');
+      if (fone) {
+        fone.addEventListener('input', () => {
+          let v = fone.value.replace(/\D/g, '').slice(0, 11);
+          if (v.length > 6) fone.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+          else if (v.length > 2) fone.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+          else fone.value = v;
+        });
+      }
+
+      // Submit do formulário
+      const form = document.getElementById('formDados');
+      if (form) {
+        form.addEventListener('submit', salvarDados);
+      }
+
+      // Chamar função do main.js que busca os dados
+      if (typeof pegarDados === "function" && id) {
+        try {
+          const resultado = await pegarDados(id);
+          console.log("Retorno da função pegarDados:", resultado[0]);
+
+          // Se pegarDados já te devolve o objeto da empresa,
+          // aqui você pode preencher os campos:
+          if (resultado[0]) {
+            const empresa = resultado[0].resultado || resultado[0];
+
+            const campoNome   = document.querySelector('[name="nome"]');
+            const campoCnpj   = document.querySelector('[name="cnpj"]');
+            const campoCidade = document.querySelector('[name="cidade"]');
+            const campoEstado = document.querySelector('[name="estado"]');
+            const campoEmail  = document.querySelector('[name="email"]');
+
+            if (campoNome)   campoNome.value   = empresa.nome   || '';
+            if (campoCnpj)   campoCnpj.value   = empresa.cnpj   || '';
+            if (campoCidade) campoCidade.value = empresa.cidade || '';
+            if (campoEstado) campoEstado.value = empresa.estado || '';
+            if (campoEmail)  campoEmail.value  = empresa.email  || '';
+            
+            const BASE_URL =resultado[1]
+            if (avatarImg && empresa.foto_perfil) {
+              avatarImg.src = `${BASE_URL}${empresa.foto_perfil}`;
+            }
+          }
+        } catch (e) {
+          console.error("Erro ao executar pegarDados:", e);
+        }
+      }
+    });
+
+    async function salvarDados(ev) {
+      ev.preventDefault();
+
+      if (!id) {
+        alert("ID da empresa não encontrado na URL.");
+        return false;
+      }
+
+      try {
+        const avatarInput = document.getElementById('avatarInput');
+        const avatarImg   = document.getElementById('avatarImg');
+
+        if (avatarInput && avatarInput.files[0]) {
+          const { resp, data } = await uploadImagemPerfil(id, avatarInput.files[0]);
+
+          if (!resp.ok || !data.resposta) {
+            alert(data.mensagem || "Erro ao enviar a foto de perfil.");
+            return false;
+          }
+
+          if (avatarImg && data.imagem && data.imagem.caminho_arquivo) {
+            avatarImg.src = `${BASE_URL}${data.imagem.caminho_arquivo}`;
+          }
+        }
+
+        const fd = new FormData(ev.target);
+        const payload = Object.fromEntries(fd.entries());
+
+        // aqui depois você chama o endpoint de atualização, quando existir
+
+        alert('Dados atualizados com sucesso!');
+        return false;
+      } catch (erro) {
+        console.error("Erro ao salvar dados:", erro);
+        alert("Erro inesperado ao salvar seus dados.");
+        return false;
+      }
+    }
+
+    async function desativarPerfil() {
+      if (!confirm('Tem certeza que deseja desativar seu perfil?')) return;
+      alert('Perfil desativado. Você pode reativar ao entrar novamente.');
+    }
+  </script>
+</body>
+</html>

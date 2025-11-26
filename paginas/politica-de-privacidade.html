@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Política de privacidade</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <main class="cx conteudo2">
+
+    <div class="appbar-local">
+      <button class="voltar" onclick="history.back()" aria-label="Voltar">←</button>
+      <h1>Política de privacidade</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          const id = new URLSearchParams(location.search).get("id");
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+      <section class="painel texto">
+
+        <div class="sumario">
+          <strong>Sumário</strong>
+          <a href="#1">1. Dados coletados</a>
+          <a href="#2">2. Finalidades</a>
+          <a href="#3">3. Compartilhamento</a>
+          <a href="#4">4. Segurança</a>
+        </div>
+
+        <p>
+          A privacidade dos nossos usuários é prioridade no IALLA. Esta Política explica 
+          como tratamos seus dados pessoais, em conformidade com a LGPD (Lei nº 13.709/2018).
+        </p>
+
+        <h3 id="1">1. Dados coletados</h3>
+        <ul>
+          <li><b>Dados Pessoais</b> — nome, e-mail, telefone, CPF/CNPJ, data de nascimento, gênero, foto de perfil;</li>
+          <li><b>Interações</b> — curtidas, comentários, pessoas confirmadas, check-ins, mensagens;</li>
+          <li><b>Geolocalização</b> — com consentimento, para sugerir eventos próximos e mostrar pessoas na região;</li>
+          <li><b>Câmera e Microfone</b> — para QR Codes, stories, foto de perfil e futuras interações (vídeo/áudio);</li>
+          <li><b>Cookies</b> — lembrar preferências, sessões e otimizar uso na web;</li>
+          <li><b>Push</b> — eventos, mensagens, check-ins e campanhas.</li>
+        </ul>
+
+        <h3 id="2">2. Finalidades</h3>
+        <ul>
+          <li>Criar e gerenciar sua conta;</li>
+          <li>Personalizar sua experiência na plataforma;</li>
+          <li>Processar ingressos e check-ins;</li>
+          <li>Notificar atividades importantes;</li>
+          <li>Prevenir fraudes e cumprir obrigações legais.</li>
+        </ul>
+
+        <h3 id="3">3. Compartilhamento</h3>
+        <ul>
+          <li>Plataformas de pagamento;</li>
+          <li>Serviços de hospedagem, autenticação, notificações e analytics;</li>
+          <li>Autoridades legais, quando exigido.</li>
+        </ul>
+
+        <h3 id="4">4. Segurança</h3>
+        <p>
+          Dados armazenados em servidores seguros, com criptografia, controles de acesso e backups.
+        </p>
+
+      </section>
+
+    </div>
+  </main>
+
+</body>
+</html>

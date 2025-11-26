@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ialla - Produtores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header class="cabecalho--login--cad cabecalho--login--cad--alte">
+        <button class="btn-voltar" onclick="history.back()" aria-label="Voltar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    width="24" height="24" aria-hidden="true">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+        <h1>
+            Cadastre-se
+        </h1>
+        <div></div>
+    </header>
+
+    <section style="margin-top: 50px;">
+        <form class="form--login--cad">
+            <label for="nome">Email</label>
+            <input type="text" name="email" id="email" disabled required>
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" id="nome" required>
+            <label for="cnpj">CNPJ</label>
+            <input type="text" name="cnpj" id="CNPJ" required oninput="mascaraCNPJ()">
+            <label for="cidade">Cidade</label>
+            <input type="text" name="cidade" id="cidade" required>
+            <label for="estado">Estado</label>
+            <select name="estado" id="estado" required>
+                <option value="">Selecione</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
+            </select>
+            <label for="Senha">Senha</label>
+            <input type="password" name="Senha" id="senha" required placeholder="* * * * * * * * * ">
+            <label for="CSenha">Confirmar Senha</label>
+            <input type="password" name="CSenha" id="csenha" required placeholder="* * * * * * * * * ">
+
+            <input class="botao--preto botao--preto--grande" type="button" value="Cadastrar" onclick="cadastrarEmpresa()">
+        </form>
+    </section>
+
+    <section style="text-align: center;">
+        <p style="font-size: 12px; margin-top: 64px;">
+            Já possui uma conta? 
+            <a style="font-size: 12px; font-weight: 800;" href="login.html">Entre.</a>
+        </p>
+    </section>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const email = params.get('email');
+        console.log(email)
+        if (email) {
+            document.getElementById('email').value = email;
+        }
+
+        function mascaraCNPJ(){
+            const c = document.getElementById("CNPJ").value
+            if(event.data == null){return}
+            if(!isNumeric(event.data)){document.getElementById("CNPJ").value = c.slice(0, -1);}
+            if(c.length == 2 || c.length == 6){document.getElementById("CNPJ").value = c + "."}
+            else if(c.length == 10){document.getElementById("CNPJ").value = c + "/"}
+            else if(c.length == 15){document.getElementById("CNPJ").value = c + "-"}
+            else if(c.length >= 19){document.getElementById("CNPJ").value = c.slice(0, -1);}
+        }
+
+        function isNumeric(value) {
+            value = value.trim();
+            const num = Number(value);
+            return !isNaN(num) && isFinite(num);
+        }
+    </script>
+    <script src="../main.js"></script>
+    
+</body>
+</html>

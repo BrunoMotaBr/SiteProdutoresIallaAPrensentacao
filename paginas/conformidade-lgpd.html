@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Conformidade e LGPD</title>
+<link rel="stylesheet" href="../css/configuracoes.css">
+</head><body>
+<main class="cx conteudo2">
+  <div class="appbar-local"><button class="voltar" onclick="history.back()">←</button><h1>Conformidade e LGPD</h1><div class="ghost"></div></div>
+  <div class="grid">
+    <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          const id = new URLSearchParams(location.search).get("id");
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+  <section class="painel">
+    <div class="caixa texto">
+      <h2 class="titulo">Compromisso com a proteção de dados</h2>
+      <p>
+        O IALLA está em total conformidade com a Lei geral de proteção de dados (LGPD – Lei 13.709/2018).
+        Seguimos os princípios de: finalidade, adequação, necessidade, livre acesso, qualidade dos dados,
+        transparência, segurança, prevenção, não discriminação e responsabilização.
+      </p>
+
+      <h3>Garantias</h3>
+      <ul>
+        <li><b>Consentimento</b>: solicitamos sua permissão antes de coletar ou usar qualquer dado.</li>
+        <li><b>Transparência</b>: explicamos claramente como seus dados são usados.</li>
+        <li><b>Controle</b>: você pode revisar, corrigir ou excluir seus dados a qualquer momento.</li>
+        <li><b>Segurança</b>: protegemos seus dados com rigor.</li>
+      </ul>
+
+      <h3> DPO – Encarregado de proteção de dados</h3>
+      <p>
+        E-mail: privacidade@ialla.com.br<br>
+        Prazo de resposta: até 15 dias úteis
+      </p>
+
+      <h3>Permissões no dispositivo</h3>
+      <table class="tabela-permissoes">
+        <thead>
+          <tr>
+            <th>Permissão</th>
+            <th>Finalidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Microfone</td>
+            <td>Enviar áudios e participar de interações futuras.</td>
+          </tr>
+          <tr>
+            <td>Notificações Push</td>
+            <td>Receber avisos de check-ins, ingressos e mensagens.</td>
+          </tr>
+          <tr>
+            <td>Armazenamento</td>
+            <td>Salvar arquivos de mídia e capturas temporárias.</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <p class="nota">Última atualização: <span id="dt"></span>.</p>
+    </div>
+  </section>
+
+  </div>
+</main>
+<script>document.getElementById('dt').textContent=new Date().toLocaleDateString('pt-BR');</script>
+</body></html>

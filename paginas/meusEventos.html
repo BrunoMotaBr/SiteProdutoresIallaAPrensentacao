@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <title>Mensagens - Meus Eventos</title>
+</head>
+<body>
+    <header class="cabecalho">
+        <script src="../main.js"></script>
+        <script src="../componente/cabecalho.render.js"></script>
+            <script>
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get('id');
+                console.log(id)
+                renderCabecalho(".cabecalho", id);
+            </script>
+    </header>
+
+    <main>
+        <section class="conteudo conteudo--eventos">
+            <h1>MEUS EVENTOS</h1>
+
+            <section class="box-eventos ">
+                <section class="box-eventos box-plus">
+                    <a id="botaoCriarEvento" href="#" class="botao--mais"> + </a>
+                </section>
+            </section>
+        </section>
+        <script>
+        const botao = document.getElementById("botaoCriarEvento");
+        botao.href = `criar-eventos.html?id=${id}`;
+        </script>
+    </main>
+</body>
+</html>

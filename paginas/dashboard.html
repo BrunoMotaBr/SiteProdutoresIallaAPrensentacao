@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ialla - Produtores - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <script src="../main.js"></script>
+  <script src="../componente/cabecalho.render.js"></script>
+  <header class="cabecalho">
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            console.log(id)
+            renderCabecalho(".cabecalho", id);
+        </script>
+  </header>
+
+  <main>
+    <section class="dashboard">
+      <fieldset>
+        <div id="app-dashboard"></div>
+      </fieldset>
+    </section>
+  
+
+  
+  </main>
+  <script src="das.js" defer></script>
+</body>
+</html>

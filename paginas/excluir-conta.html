@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Excluir conta</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <main class="cx conteudo2">
+    <script>
+        const id = new URLSearchParams(location.search).get("id");
+        const link = document.getElementsByClassName("btn")[0];
+        link.href = `./antes-de-partir.html?id=${id}`;
+        
+    </script>
+    <!-- AppBar -->
+    <div class="appbar-local">
+      <button class="voltar" onclick="history.back()" aria-label="Voltar">←</button>
+      <h1>Excluir conta</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div style="padding: 0 25%;">
+      <section class="painel">
+        <!-- AVISO IMPORTANTE -->
+        <div class="aviso card">
+          <div class="aviso-top">
+            <div class="aviso-ico">!</div>
+            <div class="aviso-tit">Aviso importante</div>
+          </div>
+          <div class="aviso-box">
+            <p style="margin:0 0 8px 0;">
+              Ao excluir sua conta, todas as suas informações, ingressos, eventos e dados pessoais serão
+              <strong>permanentemente</strong> removidos.
+            </p>
+            <p style="margin:0;">Essa ação não poderá ser desfeita.</p>
+          </div>
+        </div>
+
+        <form class="motivos card" id="formExcluir" onsubmit="return confirmarExclusao(event)">
+          <h2 class="titulo">Motivo da exclusão</h2>
+
+          <div class="radios">
+            <label><input type="radio" name="motivo" value="nao-uso"> Não estou usando o site com frequência</label>
+            <label><input type="radio" name="motivo" value="problemas-tecnicos"> Tive problemas técnicos</label>
+            <label><input type="radio" name="motivo" value="dificuldades-uso"> Estou tendo dificuldades em saber usar</label>
+          </div>
+
+          <div class="outro">
+            <span class="rotulo">Outro motivo:</span>
+            <input class="entrada" type="text" name="outro" placeholder="">
+          </div>
+
+          <div class="actions">
+            <a class="btn" href="./antes-de-partir.html">Cancelar</a>
+            <button class="btn btn-danger" type="submit">Excluir conta</button>
+          </div>
+          <p class="nota">Você precisa escolher um motivo ou preencher “Outro motivo”.</p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // TODO API real:
+    // DELETE /api/conta  body: { motivo: <string> }
+    // headers: { Authorization: 'Bearer <token>' }
+
+    function obterMotivo(fd){
+      const m = fd.get('motivo');
+      const outro = (fd.get('outro')||'').trim();
+      return outro ? outro : m;
+    }
+
+    async function confirmarExclusao(ev){
+      ev.preventDefault();
+      const fd = new FormData(ev.target);
+      const motivo = obterMotivo(fd);
+
+      if(!motivo){
+        alert('Escolha um motivo ou preencha "Outro motivo".');
+        return false;
+      }
+
+      if(!confirm('Tem certeza? Esta ação não poderá ser desfeita.')) return false;
+
+      // Chamada real (descomentar):
+      // const r = await fetch('/api/conta', {
+      //   method:'DELETE',
+      //   headers:{ 'Content-Type':'application/json' },
+      //   body: JSON.stringify({ motivo })
+      // });
+      // if(!r.ok){ const j = await r.json().catch(()=>({})); alert('Falha ao excluir: ' + (j?.erro||r.status)); return false; }
+
+      alert('Conta excluída. Sentiremos sua falta 💛');
+      window.location.href = '../index.html';
+      return false;
+    }
+  </script>
+</body>
+</html>

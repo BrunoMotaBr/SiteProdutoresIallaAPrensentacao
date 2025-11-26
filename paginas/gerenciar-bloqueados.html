@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Gerenciar bloqueados</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <script>const id = new URLSearchParams(location.search).get("id");</script>
+
+  <main class="cx conteudo2">
+    <!-- AppBar local -->
+    <div class="appbar-local">
+      <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+      <h1>Gerenciar bloqueados</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <!-- Navegação lateral -->
+      <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+
+      <!-- Conteúdo -->
+      <section class="painel">
+        <!-- Card: adicionar bloqueio -->
+        <form class="card" id="formAdd" onsubmit="return adicionarBloqueio(event)">
+          <h2 class="titulo">Bloquear usuário</h2>
+
+          <div class="busca-row">
+            <div class="campo-bloco">
+              <span class="rotulo">Usuário (username ou e-mail)</span>
+              <input class="entrada" name="ident" placeholder="@usuario ou email@exemplo.com" required>
+              <small id="hint" class="nota"></small>
+            </div>
+
+            <div class="campo-bloco">
+              <span class="rotulo">Motivo (opcional)</span>
+              <input class="entrada" name="motivo" placeholder="Assédio, spam, etc.">
+            </div>
+          </div>
+
+          <div class="acoes-h" style="margin-top:10px;">
+            <button class="btn" type="submit">Bloquear</button>
+          </div>
+
+          <p class="nota">Ao bloquear, essa pessoa não poderá ver seu perfil, interagir em seus eventos, enviar mensagens ou segui-lo.</p>
+        </form>
+
+        <!-- Card: lista de bloqueados -->
+        <div class="card" id="cardLista">
+          <h2 class="titulo">Usuários bloqueados</h2>
+          <div id="lista" class="lista"></div>
+          <p id="vazio" class="nota" style="display:none;">Você não possui usuários bloqueados.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // ====== TODOs de API ======
+    // GET    /bloqueados                      -> lista
+    // POST   /bloqueados { ident, motivo }    -> cria (ident = username ou e-mail)
+    // DELETE /bloqueados/:id                  -> desfaz bloqueio
+    // GET    /usuarios/busca?q=<ident>        -> (opcional) validar/auto-completar
+
+    const listaEl = document.getElementById('lista');
+    const vazioEl = document.getElementById('vazio');
+
+    // Estado local simulado
+    let bloqueados = [
+      { id:'u1', nome:'Maria Oliveira', username:'maria_oliv', avatar:'../imagens/avatar-padrao.png', desde:'2025-02-01' },
+      { id:'u2', nome:'João Santos',    username:'joaos',      avatar:'../imagens/avatar-padrao.png', desde:'2025-03-10' },
+    ];
+
+    function renderLista(){
+      if(!bloqueados.length){
+        listaEl.innerHTML = '';
+        vazioEl.style.display = 'block';
+        return;
+      }
+      vazioEl.style.display = 'none';
+      listaEl.innerHTML = bloqueados.map(u => `
+        <div class="item">
+          <div class="avatar"><img src="${u.avatar}" alt=""></div>
+          <div class="info">
+            <span class="nome">${u.nome}</span>
+            <span class="sub">@${u.username} • bloqueado em ${formatarData(u.desde)}</span>
+          </div>
+          <div class="acoes">
+            <button class="btn btn-line" onclick="desbloquear('${u.id}')">Desbloquear</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function formatarData(iso){
+      try{
+        const d = new Date(iso);
+        return d.toLocaleDateString('pt-BR');
+      }catch(_){ return iso; }
+    }
+
+    async function adicionarBloqueio(ev){
+      ev.preventDefault();
+      const fd = new FormData(ev.target);
+      const ident = String(fd.get('ident')||'').trim();
+      const motivo = String(fd.get('motivo')||'').trim();
+
+      if(!ident) return false;
+
+      // (Opcional) validação de formato rápida:
+      if(!/^@?[\w.]{3,}$/.test(ident) && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(ident)){
+        alert('Informe @username ou e-mail válido.');
+        return false;
+      }
+
+      // Chamada real (descomentar quando houver API):
+      // const r = await fetch('/bloqueados', {
+      //   method:'POST',
+      //   headers:{ 'Content-Type':'application/json' },
+      //   body: JSON.stringify({ ident, motivo })
+      // });
+      // if(!r.ok){ const j = await r.json().catch(()=>({})); alert('Falha ao bloquear: ' + (j?.erro || r.status)); return false; }
+      // const novo = await r.json();
+
+      // Simulação local:
+      const novo = { id: 'id_'+Math.random().toString(36).slice(2), nome: ident.startsWith('@')? ident.slice(1): ident, username: ident.replace(/^@/,'').split('@')[0], avatar:'../imagens/avatar-padrao.png', desde: new Date().toISOString() };
+      bloqueados.unshift(novo);
+      ev.target.reset();
+      renderLista();
+      alert('Usuário bloqueado.');
+      return false;
+    }
+
+    async function desbloquear(id){
+      if(!confirm('Deseja desbloquear este usuário?')) return;
+
+      // DELETE real:
+      // const r = await fetch('/bloqueados/'+id, { method:'DELETE' });
+      // if(!r.ok){ const j = await r.json().catch(()=>({})); alert('Falha ao desbloquear: ' + (j?.erro || r.status)); return; }
+
+      bloqueados = bloqueados.filter(x => x.id !== id);
+      renderLista();
+    }
+
+    // (Opcional) hint/validação enquanto digita (mock)
+    const hint = document.getElementById('hint');
+    document.querySelector('[name="ident"]').addEventListener('input', async (e) => {
+      const q = e.target.value.trim();
+      if(!q){ hint.textContent=''; return; }
+      // Exemplo de checagem (mock):
+      hint.textContent = q.includes('@') && !q.startsWith('@')
+        ? 'E-mail detectado.'
+        : 'Username detectado.';
+    });
+
+    // inicializa
+    renderLista();
+  </script>
+</body>
+</html>

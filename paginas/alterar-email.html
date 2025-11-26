@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Alterar e-mail</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <script>const id = new URLSearchParams(location.search).get("id");</script>
+  <main class="cx conteudo2">
+    <!-- AppBar local -->
+    <div class="appbar-local">
+      <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+      <h1>Alterar e-mail</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <!-- Navegação lateral -->
+      <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+        </script>
+
+      </div>
+
+      <!-- Conteúdo -->
+      <section class="painel">
+        <form class="card" id="formEmail" onsubmit="return pedirTrocaEmail(event)">
+          <h2 class="titulo">Seu e-mail</h2>
+
+          <div class="grid-2">
+            <label class="campo-bloco">
+              <span class="rotulo">E-mail atual</span>
+              <input class="entrada" name="email_atual" value="usuario@exemplo.com" readonly>
+            </label>
+
+            <label class="campo-bloco">
+              <span class="rotulo">Confirmar senha</span>
+              <input class="entrada" name="senha" type="password" placeholder="Digite sua senha" required>
+            </label>
+
+            <label class="campo-bloco">
+              <span class="rotulo">Novo e-mail</span>
+              <input class="entrada" name="novo_email" type="email" placeholder="novo@exemplo.com" required>
+            </label>
+
+            <label class="campo-bloco">
+              <span class="rotulo">Confirmar novo e-mail</span>
+              <input class="entrada" name="novo_email_conf" type="email" placeholder="repita o novo e-mail" required>
+              <small id="statusConf" class="dica"></small>
+            </label>
+          </div>
+
+          <div class="acoes-h" style="margin-top:8px;">
+            <button class="btn" type="button" onclick="history.back()">Cancelar</button>
+            <div style="flex:1"></div>
+            <button class="btn" type="submit">Enviar código</button>
+          </div>
+
+          <p class="nota">Enviaremos um código de 6 dígitos para o <strong>novo e-mail</strong> para confirmar a mudança.</p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal de confirmação por código -->
+  <div class="modal" id="modalCodigo" aria-hidden="true">
+    <div class="caixa" role="dialog" aria-modal="true">
+      <div class="cab">
+        <h3 style="margin:0;">Confirmar alteração</h3>
+        <button class="fechar" onclick="fecharModal()">×</button>
+      </div>
+
+      <p class="dica" id="textoEnvio">Um código foi enviado para <strong id="destino"></strong>. Digite abaixo para concluir.</p>
+
+      <form onsubmit="return confirmarTroca(event)">
+        <label class="campo-bloco">
+          <span class="rotulo">Código de verificação</span>
+          <input class="entrada codigo6" id="codigo" inputmode="numeric" maxlength="6" placeholder="———" required>
+        </label>
+
+        <div class="acoes-h" style="margin-top:8px;">
+          <button class="btn" type="button" onclick="reenviarCodigo()">Reenviar</button>
+          <div style="flex:1"></div>
+          <button class="btn btn-primario" type="submit">Confirmar</button>
+        </div>
+        <p id="feedback" class="dica" style="margin-top:8px;"></p>
+      </form>
+    </div>
+  </div>
+  <script src="../main.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", async () => {
+      const resultado = await pegarDados(id);
+      
+      console.log(resultado)
+      if (resultado[0]) {
+        const empresa = resultado[0].resultado || resultado[0];
+        const campoEmail   = document.querySelector('[name="email_atual"]');
+        if (campoEmail)  campoEmail.value  = empresa.email  || '';
+      }
+    })
+    // ===== Validação client-side: comparar e-mails =====
+    const elNovo = document.querySelector('[name="novo_email"]');
+    const elNovo2 = document.querySelector('[name="novo_email_conf"]');
+    const elStatus = document.getElementById('statusConf');
+    
+    function validarIguais(){
+      if(!elNovo.value || !elNovo2.value){ elStatus.textContent=''; return; }
+      if(elNovo.value.trim().toLowerCase() === elNovo2.value.trim().toLowerCase()){
+        elStatus.textContent='E-mails coincidem.'; elStatus.className='ok';
+      } else {
+        elStatus.textContent='E-mails não coincidem.'; elStatus.className='erro';
+      }
+    }
+    elNovo.addEventListener('input', validarIguais);
+    elNovo2.addEventListener('input', validarIguais);
+
+    // ===== Fluxo: pedir troca -> abre modal de código =====
+    let emailDestino = '';
+    async function pedirTrocaEmail(ev){
+      ev.preventDefault();
+      const fd = new FormData(ev.target);
+      const novo = String(fd.get('novo_email')||'').trim().toLowerCase();
+      const conf = String(fd.get('novo_email_conf')||'').trim().toLowerCase();
+      const senha = String(fd.get('senha')||'');
+      console.log(sen)
+
+      if(!novo || !conf || !senha) return false;
+      if(novo !== conf){ alert('Os e-mails não coincidem.'); return false; }
+
+      emailDestino = novo;
+
+      // TODO: descomentar quando a API estiver disponível
+      // const resp = await fetch('/pedir-troca-email', {
+      //   method:'POST',
+      //   headers:{'Content-Type':'application/json'},
+      //   body: JSON.stringify({ email: novo, senha })
+      // });
+      // if(!resp.ok){ const j = await resp.json().catch(()=>({})); alert('Falha ao enviar código: ' + (j?.erro||resp.status)); return false; }
+
+      // Sucesso (simulado)
+      abrirModal(novo);
+      return false;
+    }
+
+    // ===== Modal helpers =====
+    const modal = document.getElementById('modalCodigo');
+    const textoEnvio = document.getElementById('textoEnvio');
+    const destino = document.getElementById('destino');
+    const feedback = document.getElementById('feedback');
+
+    function abrirModal(email){
+      destino.textContent = email;
+      modal.classList.add('aberta');
+      modal.setAttribute('aria-hidden','false');
+      document.getElementById('codigo').focus();
+    }
+    function fecharModal(){
+      modal.classList.remove('aberta');
+      modal.setAttribute('aria-hidden','true');
+      feedback.textContent = '';
+      document.getElementById('codigo').value = '';
+    }
+
+    async function reenviarCodigo(){
+      // TODO: chamar novamente /pedir-troca-email
+      feedback.textContent = 'Novo código enviado.';
+      feedback.className = 'dica ok';
+    }
+
+    // ===== Confirmar troca com o código =====
+    async function confirmarTroca(ev){
+      ev.preventDefault();
+      const cod = document.getElementById('codigo').value.replace(/\D/g,'').slice(0,6);
+      if(cod.length !== 6){ feedback.textContent = 'Digite os 6 dígitos.'; feedback.className='dica erro'; return false; }
+
+      // TODO: descomentar com sua API
+      // const r = await fetch('/confirmar-troca-email', {
+      //   method:'POST',
+      //   headers:{'Content-Type':'application/json'},
+      //   body: JSON.stringify({ token: cod })
+      // });
+      // if(!r.ok){ const j = await r.json().catch(()=>({})); feedback.textContent = 'Código inválido ou expirado.'; feedback.className='dica erro'; return false; }
+
+      alert('E-mail atualizado com sucesso!');
+      fecharModal();
+      // Opcional: redirecionar
+      // location.href = './configuracoes.html';
+      return false;
+    }
+  </script>
+</body>
+</html>

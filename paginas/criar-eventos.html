@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Criar evento</title>
+  <link rel="stylesheet" href="../css/perfil.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+  <header class="cabecalho">
+    <script src="../componente/cabecalho.render.js"></script>
+    <script>
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            console.log(id)
+            renderCabecalho(".cabecalho", id);
+    </script>
+  </header>
+
+  <main class="conteudo2 conteudo-estreito">
+    <form class="form-cardapio" onsubmit="return criarEvento(event)">
+      
+      <div style="width: min(800px, 70%);">
+        <label class="campo">
+          <span class="rotulo">Nome</span>
+          <input class="entrada" type="text" name="nome" placeholder="Digite um nome para o evento"/>
+        </label>
+
+        <label class="campo">
+          <span class="rotulo">Categoria</span>
+          <div class="select-wrap">
+            <select class="entrada select" name="categoria">
+              <option value="" selected>Selecione a categoria</option>
+              <option value="e1">Religião</option>
+              <option value="e2">...</option>
+            </select>
+            <span class="chevron">▾</span>
+          </div>
+        </label>
+
+        <div class="dropzone" id="dropzone">
+          <input id="arquivo" type="file" multiple hidden>
+          <button class="drop-btn" type="button" onclick="document.getElementById('arquivo').click()">
+            <div class="plus">+</div>
+            <div class="dz-text">Clique ou arraste para adicionar</div>
+          </button>
+        </div>
+
+        <div id="lista-arquivos" class="lista-arquivos"></div>
+
+        <label class="campo">
+          <span class="rotulo">Nome do local</span>
+          <input class="entrada" type="text" name="local_nome" placeholder="Ex.: Arena Central">
+        </label>
+
+        <label class="campo">
+          <span class="rotulo">CEP</span>
+          <input class="entrada" type="text" name="cep" inputmode="numeric" placeholder="00000-000" maxlength="9">
+        </label>
+
+        <label class="campo">
+          <span class="rotulo">Estado</span>
+          <div class="select-wrap">
+            <select class="entrada select" name="estado">
+              <option value="" selected>Selecione o estado</option>
+              <option value="MA">MA - Maranhão</option>
+              <option value="SP">SP - São Paulo</option>
+              <option value="RJ">RJ - Rio de Janeiro</option>
+            </select>
+            <span class="chevron">▾</span>
+          </div>
+        </label>
+
+        <label class="campo">
+          <span class="rotulo">Cidade</span>
+          <div class="select-wrap">
+            <select class="entrada select" name="cidade">
+              <option value="" selected>Selecione a cidade</option>
+            </select>
+            <span class="chevron">▾</span>
+          </div>
+        </label>
+
+        <label class="campo">
+          <span class="rotulo">Número</span>
+          <input class="entrada" type="text" name="numero" placeholder="Ex.: 123">
+        </label>
+
+        <section class="bloco-ingressos">
+          <span class="rotulo">Ingresso(s)</span>
+          <div class="grupo-inline">
+            <input class="entrada" id="ingNome" placeholder="Nome da categoria">
+            <div class="input-prefixo">
+              <span>R$</span>
+              <input class="entrada" id="ingPreco" inputmode="decimal" placeholder="0,00">
+            </div>
+            <input class="entrada" id="ingQtd" inputmode="numeric" placeholder="Quantidade">
+            <button class="btn" type="button" id="addIng">+</button>
+          </div>
+          <div id="listaIngressos" class="lista-ingressos"></div>
+        </section>
+
+        <section class="bloco-datahora">
+          <label class="campo">
+            <span class="rotulo">Data</span>
+            <input class="entrada" type="date" name="data">
+          </label>
+          <label class="campo">
+            <span class="rotulo">Horário</span>
+            <input class="entrada" type="time" name="hora">
+          </label>
+        </section>
+
+        <button class="btn btn-primario" type="submit" style="margin-top:16px;">Criar evento</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    function criarEvento(ev){
+      ev.preventDefault();
+
+      const f = ev.target;
+      const nome = (f.nome?.value || '').trim();
+      const categoria = (f.categoria?.value || '').trim();
+      const data = (f.data?.value || '').trim();
+      const hora = (f.hora?.value || '').trim();
+
+      if (!nome) { alert('Informe o nome do evento.'); return false; }
+      if (!categoria) { alert('Selecione a categoria.'); return false; }
+      if (!data || !hora) { alert('Informe data e horário.'); return false; }
+
+      alert('Evento cadastrado com sucesso!');
+      window.location.href = 'dashboard.html?id=' + id;
+      return false;
+    }
+  </script>
+
+  <script>
+    const ingressos = [];
+    const elNome = document.getElementById('ingNome');
+    const elPreco = document.getElementById('ingPreco');
+    const elQtd = document.getElementById('ingQtd');
+    const elLista = document.getElementById('listaIngressos');
+
+    elPreco.addEventListener('input', () => {
+      let v = elPreco.value.replace(/[^\d]/g, '');
+      if (!v) { elPreco.value = ''; return; }
+      v = (parseInt(v, 10) / 100).toFixed(2).replace('.', ',');
+      elPreco.value = v;
+    });
+
+    elQtd.addEventListener('input', () => {
+      elQtd.value = elQtd.value.replace(/\D/g, '').slice(0, 6);
+    });
+
+    document.getElementById('addIng').addEventListener('click', () => {
+      const nome = elNome.value.trim();
+      const precoStr = elPreco.value.trim().replace(/\./g,'').replace(',','.');
+      const qtdStr = elQtd.value.trim();
+
+      if (!nome || !precoStr || !qtdStr) return alert('Preencha nome, preço e quantidade.');
+
+      const preco = Number(precoStr);
+      const qtd = Number(qtdStr);
+      if (isNaN(preco) || isNaN(qtd) || preco <= 0 || qtd <= 0) {
+        return alert('Preço e quantidade devem ser válidos.');
+      }
+
+      ingressos.push({ id: crypto.randomUUID?.() || String(Math.random()), nome, preco, qtd });
+      elNome.value = ''; elPreco.value = ''; elQtd.value = '';
+      renderIngressos();
+    });
+
+    function renderIngressos(){
+      elLista.innerHTML = ingressos.map(i => `
+        <div class="ing">
+          <div class="info">
+            <span>${i.nome}</span>
+            <span>R$ ${i.preco.toFixed(2).replace('.', ',')}</span>
+            <span>Qtd: ${i.qtd}</span>
+          </div>
+          <button class="x" type="button" onclick="remIng('${i.id}')">×</button>
+        </div>
+      `).join('');
+    }
+
+    window.remIng = function(id){
+      const idx = ingressos.findIndex(x => x.id === id);
+      if (idx >= 0) { ingressos.splice(idx, 1); renderIngressos(); }
+    };
+  </script>
+
+  <script>
+    const dz = document.getElementById('dropzone');
+    const input = document.getElementById('arquivo');
+    const lista = document.getElementById('lista-arquivos');
+
+    const realcar = (on) => dz.classList.toggle('dropzone-hover', !!on);
+
+    ['dragenter','dragover'].forEach(e =>
+      dz.addEventListener(e, ev => { ev.preventDefault(); realcar(true); })
+    );
+    ['dragleave','drop'].forEach(e =>
+      dz.addEventListener(e, ev => { ev.preventDefault(); realcar(false); })
+    );
+
+    dz.addEventListener('drop', (ev) => {
+      const files = [...(ev.dataTransfer?.files || [])];
+      if (files.length) renderLista(files);
+    });
+
+    input.addEventListener('change', () => {
+      renderLista([...input.files]);
+    });
+
+    function renderLista(files){
+      lista.innerHTML = files.map(f =>
+        `<div class="item-arquivo"><span class="nome">${f.name}</span><span class="tam">${(f.size/1024).toFixed(1)} KB</span></div>`
+      ).join('');
+    }
+
+    document.querySelector('input[name="cep"]').addEventListener('input', function(){
+      let v = this.value.replace(/\D/g,'').slice(0,8);
+      if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+      this.value = v;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Configurações</title>
+  <link rel="stylesheet" href="../css/configuracoes.css">
+</head>
+<body>
+  <script>const id = new URLSearchParams(location.search).get("id");</script>
+  <main class="cx conteudo2">
+    <!-- AppBar local da página -->
+    <div class="appbar-local">
+    <button class="voltar" onclick="window.location.href = `./dashboard.html?id=${id}`" aria-label="Voltar">←</button>
+      <h1>Configurações</h1>
+      <div class="ghost"></div>
+    </div>
+
+    <div class="grid">
+      <div class="nav-config" id="menu-config">
+        <script src="../componente/menuConfiguracoes.js"></script>
+        <script>
+          renderMenuConfiguracoes("#menu-config", id);
+          function irAntesDePartir() {
+            window.location.href = `antes-de-partir.html?id=${id}`;
+          }
+        </script>
+
+      </div>
+      <!-- Coluna conteúdo -->
+      <section class="painel">
+        <div class="card">
+          <h2 class="titulo">Preferências de conta</h2>
+
+          <div class="campo-linha">
+            <div class="txt">
+              <strong>Visibilidade do perfil</strong>
+              <span class="sub">Permite que outros vejam seu nome, foto e bio.</span>
+            </div>
+            <label class="switch">
+              <input id="visib" type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="campo-linha">
+            <div class="txt">
+              <strong>Notificações por e-mail</strong>
+              <span class="sub">Receber atualizações sobre eventos e mensagens.</span>
+            </div>
+            <label class="switch">
+              <input id="notifEmail" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="campo-linha">
+            <div class="txt">
+              <strong>Notificações push</strong>
+              <span class="sub">Alertas no dispositivo (mobile).</span>
+            </div>
+            <label class="switch">
+              <input id="notifPush" type="checkbox" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="titulo">Sessão</h2>
+          <div class="acoes-h">
+            <button class="btn" onclick="sair()">Sair da conta</button>
+            <button class="btn btn-line" onclick="encerrarSessoes()">Encerrar sessões em todos os dispositivos</button>
+          </div>
+          <p class="nota">* Você poderá entrar novamente quando quiser.</p>
+        </div>
+
+        <div class="card perigo">
+          <h2 class="titulo">Zona de risco</h2>
+          <p>Excluir sua conta removerá permanentemente seus dados.</p>
+          <button class="btn btn-danger" onclick="irAntesDePartir()">Excluir conta</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // ====== TODOs de integração com API ======
+    // Exemplo de endpoints:
+    // PATCH /api/configuracoes { visibilidadePerfil: bool, notifEmail: bool, notifPush: bool }
+    // POST  /api/auth/logout
+    // POST  /api/auth/logout-all
+    // DELETE /api/conta
+
+    const $ = (sel) => document.querySelector(sel);
+
+    ['visib','notifEmail','notifPush'].forEach(id=>{
+      const el = document.getElementById(id);
+      el.addEventListener('change', async () => {
+        // TODO: trocar por fetch real
+        // await fetch('/api/configuracoes', {method:'PATCH', headers:{'Content-Type':'application/json'},
+        // body: JSON.stringify({ [id]: el.checked })});
+        console.log('PATCH /api/configuracoes', id, el.checked);
+      });
+    });
+
+    async function sair(){
+      // await fetch('/api/auth/logout',{method:'POST'});
+      alert('Sessão encerrada.');
+      location.href = '../login.html';
+    }
+
+    async function encerrarSessoes(){
+      // await fetch('/api/auth/logout-all',{method:'POST'});
+      alert('Todas as sessões foram encerradas.');
+    }
+
+    async function excluirConta(){
+      if(!confirm('Tem certeza? Esta ação é irreversível.')) return;
+      // await fetch('/api/conta',{method:'DELETE'});
+      alert('Conta excluída.');
+      location.href = '../index.html';
+    }
+  </script>
+</body>
+</html>
